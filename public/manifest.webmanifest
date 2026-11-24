@@ -1,0 +1,33 @@
+{
+  "id": "/",
+  "name": "المسح الإشعاعي الطبي | Medical Radiation Survey",
+  "short_name": "المسح الإشعاعي",
+  "description": "منصة عربية تعليمية ومرجعية للمسح الإشعاعي الطبي، وأجهزة القياس، والمخطط الهندسي، والحاسبات، والنماذج الفنية.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#001F4D",
+  "background_color": "#F8FAFC",
+  "icons": [
+    {
+      "src": "/icons/pwa-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/pwa-maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
