@@ -1,23 +1,31 @@
-import { useCallback, useEffect, useState } from 'react';
+import { Suspense, lazy, useCallback, useEffect, useState } from 'react';
 import { Layout } from './components/Layout';
 import { DesignerSplash } from './components/DesignerSplash';
 import { HomePage, StartHerePage, TracksPage } from './pages/HomeStartTracksPages';
-import { LessonDetailPage, LibraryPage } from './pages/LibraryPages';
-import { EquipmentCatalogPage, EquipmentComparePage, EquipmentDetailPage } from './pages/EquipmentPages';
-import { PlannerPage } from './pages/PlannerPage';
-import { CalculatorsPage } from './pages/CalculatorsPage';
-import { FormsReportsPage } from './pages/FormsReportsPage';
-import { ScenarioDetailPage, ScenariosListPage } from './pages/ScenariosPage';
-import {
-  AboutOfflinePage,
-  GlossaryPage,
-  NotFoundPage,
-  PrivacyPage,
-  ReferencesPage,
-} from './pages/InfoPages';
 import { usePWA } from './hooks/usePWA';
-import { loadUserProgress, saveUserProgress } from './utils/storage';
+import {
+  issueTrackCertificate,
+  loadUserProgress,
+  recordQuizAttempt,
+  saveUserProgress,
+} from './utils/storage';
 import type { LocalUserProgress, TrackId } from './types';
+
+const LibraryPage = lazy(() => import('./pages/LibraryPages').then((m) => ({ default: m.LibraryPage })));
+const LessonDetailPage = lazy(() => import('./pages/LibraryPages').then((m) => ({ default: m.LessonDetailPage })));
+const EquipmentCatalogPage = lazy(() => import('./pages/EquipmentPages').then((m) => ({ default: m.EquipmentCatalogPage })));
+const EquipmentDetailPage = lazy(() => import('./pages/EquipmentPages').then((m) => ({ default: m.EquipmentDetailPage })));
+const EquipmentComparePage = lazy(() => import('./pages/EquipmentPages').then((m) => ({ default: m.EquipmentComparePage })));
+const PlannerPage = lazy(() => import('./pages/PlannerPage').then((m) => ({ default: m.PlannerPage })));
+const CalculatorsPage = lazy(() => import('./pages/CalculatorsPage').then((m) => ({ default: m.CalculatorsPage })));
+const FormsReportsPage = lazy(() => import('./pages/FormsReportsPage').then((m) => ({ default: m.FormsReportsPage })));
+const ScenariosListPage = lazy(() => import('./pages/ScenariosPage').then((m) => ({ default: m.ScenariosListPage })));
+const ScenarioDetailPage = lazy(() => import('./pages/ScenariosPage').then((m) => ({ default: m.ScenarioDetailPage })));
+const GlossaryPage = lazy(() => import('./pages/InfoPages').then((m) => ({ default: m.GlossaryPage })));
+const ReferencesPage = lazy(() => import('./pages/InfoPages').then((m) => ({ default: m.ReferencesPage })));
+const AboutOfflinePage = lazy(() => import('./pages/InfoPages').then((m) => ({ default: m.AboutOfflinePage })));
+const PrivacyPage = lazy(() => import('./pages/InfoPages').then((m) => ({ default: m.PrivacyPage })));
+const NotFoundPage = lazy(() => import('./pages/InfoPages').then((m) => ({ default: m.NotFoundPage })));
 
 function normalizePath(raw: string): string {
   const cleaned = raw.split('?')[0].split('#')[0].replace(/\/+$/, '');
@@ -146,6 +154,20 @@ export default function App() {
     [updateProgress]
   );
 
+  const handleSaveQuizAttempt = useCallback(
+    (lessonId: string, score: number, total: number) => {
+      updateProgress((p) => recordQuizAttempt(p, lessonId, score, total));
+    },
+    [updateProgress]
+  );
+
+  const handleIssueTrackCertificate = useCallback(
+    (recipientName: string, trackId: TrackId = 'beginner') => {
+      updateProgress((p) => issueTrackCertificate(p, trackId, recipientName));
+    },
+    [updateProgress]
+  );
+
   const handleToggleCompare = useCallback((deviceId: string) => {
     setCompareIds((prev) => {
       if (prev.includes(deviceId)) return prev.filter((id) => id !== deviceId);
@@ -162,7 +184,14 @@ export default function App() {
       return <StartHerePage onNavigate={navigate} progress={progress} onSelectTrack={handleSelectTrack} />;
     }
     if (currentPath === '/tracks') {
-      return <TracksPage onNavigate={navigate} progress={progress} onSelectTrack={handleSelectTrack} />;
+      return (
+        <TracksPage
+          onNavigate={navigate}
+          progress={progress}
+          onSelectTrack={handleSelectTrack}
+          onIssueCertificate={handleIssueTrackCertificate}
+        />
+      );
     }
     if (currentPath === '/library') {
       return <LibraryPage onNavigate={navigate} progress={progress} />;
@@ -178,6 +207,7 @@ export default function App() {
           onToggleComplete={handleToggleLessonComplete}
           onToggleBookmark={handleToggleBookmark}
           onToggleChecklist={handleToggleChecklist}
+          onSaveQuizAttempt={handleSaveQuizAttempt}
         />
       );
     }
@@ -294,7 +324,15 @@ export default function App() {
         offlineState={pwa.offlineState}
         onApplyUpdate={pwa.applyUpdateSafely}
       >
-        {renderPage()}
+        <Suspense
+          fallback={
+            <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E] p-8 text-center text-sm text-slate-600 dark:text-slate-300">
+              جاري تحميل الصفحة...
+            </div>
+          }
+        >
+          {renderPage()}
+        </Suspense>
       </Layout>
     </>
   );

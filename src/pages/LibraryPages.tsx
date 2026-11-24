@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { ArrowLeft, ArrowRight, Bookmark, CheckCircle2, Circle, Info } from 'lucide-react';
 import { CURRICULUM_UNITS, LESSONS } from '../data/lessons';
 import { Breadcrumbs, Ltr, ReviewStatusText, ScientificMetaPanel } from '../components/SharedUI';
+import { LessonQuizCard } from '../components/LessonQuizCard';
+import { getLessonQuizStatus } from '../utils/storage';
 import type { LocalUserProgress, TrackId } from '../types';
 
 interface LibraryProps {
@@ -156,6 +158,7 @@ interface LessonDetailProps {
   onToggleComplete: (id: string) => void;
   onToggleBookmark: (item: { type: 'lesson'; id: string; title: string; route: string }) => void;
   onToggleChecklist: (key: string, idx: number, total: number) => void;
+  onSaveQuizAttempt: (lessonId: string, score: number, total: number) => void;
 }
 
 export const LessonDetailPage: React.FC<LessonDetailProps> = ({
@@ -166,15 +169,14 @@ export const LessonDetailPage: React.FC<LessonDetailProps> = ({
   onToggleComplete,
   onToggleBookmark,
   onToggleChecklist,
+  onSaveQuizAttempt,
 }) => {
   const lessonIndex = LESSONS.findIndex((l) => l.id === lessonId);
   const lesson = LESSONS[lessonIndex];
-  const [selectedAnswers, setSelectedAnswers] = useState<Record<string, number>>({});
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (lesson) {
       onMarkLessonVisited(lesson.id);
-      setSelectedAnswers({});
     }
   }, [lesson?.id]);
 
@@ -199,6 +201,12 @@ export const LessonDetailPage: React.FC<LessonDetailProps> = ({
   const isCompleted = progress.completedLessons.includes(lesson.id);
   const isBookmarked = progress.bookmarks.some((b) => b.type === 'lesson' && b.id === lesson.id);
   const checklistState = progress.completedChecklists[`lesson_${lesson.id}`] ?? [];
+  const quizRecord = progress.quizRecords?.[lesson.id];
+  const quizStatus = getLessonQuizStatus(progress, lesson.id);
+  const quizBestPct =
+    quizRecord && quizRecord.totalQuestions > 0
+      ? Math.round((quizRecord.highestScore / quizRecord.totalQuestions) * 100)
+      : null;
 
   return (
     <article className="space-y-8 max-w-4xl">
@@ -225,6 +233,26 @@ export const LessonDetailPage: React.FC<LessonDetailProps> = ({
           <span>
             حالة المحتوى: <strong>{lesson.contentStatus}</strong>
           </span>
+          {lesson.quiz.length > 0 && (
+            <>
+              <span aria-hidden="true">·</span>
+              {quizStatus === 'not_attempted' && (
+                <span className="inline-flex items-center rounded-full bg-slate-100 dark:bg-slate-800 px-2.5 py-0.5 text-[11px] font-semibold text-slate-600 dark:text-slate-300">
+                  الاختبار: لم يُختبر بعد
+                </span>
+              )}
+              {quizStatus === 'passed' && quizBestPct !== null && (
+                <span className="inline-flex items-center rounded-full bg-emerald-100 dark:bg-emerald-950/60 px-2.5 py-0.5 text-[11px] font-bold text-emerald-800 dark:text-emerald-300">
+                  مجتاز — أعلى درجة: <Ltr>{quizBestPct}%</Ltr>
+                </span>
+              )}
+              {quizStatus === 'failed' && quizBestPct !== null && (
+                <span className="inline-flex items-center rounded-full bg-amber-100 dark:bg-amber-950/60 px-2.5 py-0.5 text-[11px] font-bold text-amber-900 dark:text-amber-300">
+                  لم يجتز — أعلى درجة: <Ltr>{quizBestPct}%</Ltr> (المطلوب <Ltr>80%</Ltr>)
+                </span>
+              )}
+            </>
+          )}
         </div>
 
         <h1 className="text-2xl sm:text-3xl font-bold text-[#001F4D] dark:text-white leading-snug">{lesson.title}</h1>
@@ -401,48 +429,14 @@ export const LessonDetailPage: React.FC<LessonDetailProps> = ({
         </div>
       </section>
 
-      {/* Quiz with Explanations */}
-      {lesson.quiz.length > 0 && (
-        <section className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E] p-6 space-y-4">
-          <h2 className="text-lg font-bold text-[#001F4D] dark:text-white">سؤال تحقق وفهم</h2>
-          {lesson.quiz.map((q) => {
-            const chosen = selectedAnswers[q.id];
-            return (
-              <div key={q.id} className="space-y-3">
-                <p className="font-semibold text-sm text-[#001F4D] dark:text-slate-100">{q.question}</p>
-                <div className="space-y-2">
-                  {q.options.map((opt, idx) => {
-                    const isPicked = chosen === idx;
-                    const isCorrect = idx === q.correctIndex;
-                    let cls =
-                      'border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-[#050E1D] text-slate-800 dark:text-slate-200';
-                    if (chosen !== undefined) {
-                      if (isCorrect) cls = 'border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-950 dark:text-emerald-100';
-                      else if (isPicked) cls = 'border-rose-500 bg-rose-50 dark:bg-rose-950/40 text-rose-950 dark:text-rose-100';
-                    }
-                    return (
-                      <button
-                        key={idx}
-                        type="button"
-                        onClick={() => setSelectedAnswers((prev) => ({ ...prev, [q.id]: idx }))}
-                        className={`w-full text-right rounded-lg border p-3 text-sm transition-colors ${cls}`}
-                      >
-                        {opt}
-                      </button>
-                    );
-                  })}
-                </div>
-                {chosen !== undefined && (
-                  <div className="rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-[#050E1D] p-3.5 text-xs text-slate-700 dark:text-slate-300">
-                    <strong>{chosen === q.correctIndex ? 'إجابة صحيحة — التفسير العلمي: ' : 'مراجعة مطلوبة — التفسير العلمي: '}</strong>
-                    {q.explanation}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </section>
-      )}
+      {/* Quiz with Explanations & Citations */}
+      <LessonQuizCard
+        lessonId={lesson.id}
+        questions={lesson.quiz}
+        quizRecord={quizRecord}
+        onSaveAttempt={onSaveQuizAttempt}
+        onNavigate={onNavigate}
+      />
 
       {/* Scientific References & Meta */}
       <ScientificMetaPanel meta={lesson.meta} onNavigate={onNavigate} />

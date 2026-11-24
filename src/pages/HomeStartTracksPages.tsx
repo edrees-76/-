@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   ArrowLeft,
+  Award,
   BookOpen,
   Calculator,
   CheckCircle2,
@@ -8,6 +9,7 @@ import {
   FileText,
   Gauge,
   Layers,
+  Lock,
   Shield,
 } from 'lucide-react';
 import { CURRICULUM_UNITS, LESSONS } from '../data/lessons';
@@ -15,12 +17,15 @@ import { EQUIPMENT_LIST } from '../data/equipment';
 import { TRAINING_SCENARIOS } from '../data/scenarios';
 import { LOGO_PATH } from '../components/Layout';
 import { Breadcrumbs, Ltr } from '../components/SharedUI';
+import { CompletionCertificateModal } from '../components/CompletionCertificateModal';
+import { checkBeginnerTrackEligibility, getLessonQuizStatus, getTrackCertificate } from '../utils/storage';
 import type { LocalUserProgress, TrackId } from '../types';
 
 interface NavProps {
   onNavigate: (path: string) => void;
   progress: LocalUserProgress;
   onSelectTrack: (track: TrackId) => void;
+  onIssueCertificate?: (recipientName: string, trackId?: TrackId) => void;
 }
 
 const TRACK_DETAILS: Record<
@@ -76,6 +81,9 @@ export const HomePage: React.FC<NavProps> = ({ onNavigate, progress, onSelectTra
   const lastLesson = LESSONS.find((l) => l.id === progress.lastLessonId);
   const completedCount = progress.completedLessons.length;
   const totalLessons = LESSONS.length;
+  const activeTrackLessons = LESSONS.filter((l) => l.trackTags.includes(progress.selectedTrack));
+  const activeEligibility = checkBeginnerTrackEligibility(progress, activeTrackLessons);
+  const activeTrackTitle = TRACK_DETAILS[progress.selectedTrack].title;
 
   return (
     <div className="space-y-12">
@@ -135,11 +143,24 @@ export const HomePage: React.FC<NavProps> = ({ onNavigate, progress, onSelectTra
             تقدمك المحفوظ محليًا على هذا المتصفح
           </h2>
           <p className="text-xs text-slate-700 dark:text-slate-300">
-            أكملت <Ltr>{completedCount}</Ltr> من أصل <Ltr>{totalLessons}</Ltr> درسًا · العلامات المرجعية: <Ltr>{progress.bookmarks.length}</Ltr>
+            أكملت <Ltr>{completedCount}</Ltr> من أصل <Ltr>{totalLessons}</Ltr> درسًا · اختبارات <Ltr>{activeTrackTitle}</Ltr> المجتازة (<Ltr>≥ 80%</Ltr>):{' '}
+            <Ltr>{activeEligibility.passedQuizzesCount} / {activeEligibility.totalQuizzes}</Ltr> · العلامات المرجعية:{' '}
+            <Ltr>{progress.bookmarks.length}</Ltr>
             {lastLesson ? ` · آخر درس مفتوح: ${lastLesson.number}. ${lastLesson.title}` : ''}
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => onNavigate('/tracks')}
+            className={`rounded-lg px-3.5 py-2 text-xs font-bold transition-colors ${
+              activeEligibility.eligible
+                ? 'bg-emerald-600 text-white hover:bg-emerald-700'
+                : 'border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#050E1D] text-[#001F4D] dark:text-slate-200'
+            }`}
+          >
+            {activeEligibility.eligible ? 'استعراض شهادة المسار ✓' : `خريطة ${activeTrackTitle}`}
+          </button>
           {lastLesson ? (
             <button
               type="button"
@@ -401,9 +422,25 @@ export const StartHerePage: React.FC<NavProps> = ({ onNavigate }) => (
   </div>
 );
 
-export const TracksPage: React.FC<NavProps> = ({ onNavigate, progress, onSelectTrack }) => {
+export const TracksPage: React.FC<NavProps> = ({
+  onNavigate,
+  progress,
+  onSelectTrack,
+  onIssueCertificate,
+}) => {
+  const [certModalOpen, setCertModalOpen] = useState(false);
   const activeTrack = TRACK_DETAILS[progress.selectedTrack];
   const filteredLessons = LESSONS.filter((l) => l.trackTags.includes(progress.selectedTrack));
+  const eligibility = checkBeginnerTrackEligibility(progress, filteredLessons);
+  const currentCertificate = getTrackCertificate(progress, progress.selectedTrack);
+  const readPct =
+    eligibility.totalLessons > 0
+      ? Math.round((eligibility.completedCount / eligibility.totalLessons) * 100)
+      : 0;
+  const quizPct =
+    eligibility.totalQuizzes > 0
+      ? Math.round((eligibility.passedQuizzesCount / eligibility.totalQuizzes) * 100)
+      : 0;
 
   return (
     <div className="space-y-8">
@@ -463,27 +500,120 @@ export const TracksPage: React.FC<NavProps> = ({ onNavigate, progress, onSelectT
         </div>
       </section>
 
+      {/* Active Track Independent Progress Dashboard */}
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E] p-5 space-y-2.5">
+            <div className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+              1. مؤشر إكمال الدروس (القراءة)
+            </div>
+            <div className="flex items-baseline justify-between">
+              <span className="text-2xl font-extrabold text-[#001F4D] dark:text-white">
+                <Ltr>{eligibility.completedCount} / {eligibility.totalLessons}</Ltr>
+              </span>
+              <span className="text-sm font-bold text-[#007574] dark:text-[#00D1CE]">
+                <Ltr>{readPct}%</Ltr>
+              </span>
+            </div>
+            <div className="h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+              <div
+                className="h-full bg-[#007574] dark:bg-[#00D1CE] transition-all"
+                style={{ width: `${readPct}%` }}
+              />
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E] p-5 space-y-2.5">
+            <div className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+              2. مؤشر اجتياز الاختبارات (≥ 80%)
+            </div>
+            <div className="flex items-baseline justify-between">
+              <span className="text-2xl font-extrabold text-[#001F4D] dark:text-white">
+                <Ltr>{eligibility.passedQuizzesCount} / {eligibility.totalQuizzes}</Ltr>
+              </span>
+              <span className="text-sm font-bold text-emerald-700 dark:text-emerald-400">
+                <Ltr>{quizPct}%</Ltr>
+              </span>
+            </div>
+            <div className="h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+              <div
+                className="h-full bg-emerald-600 dark:bg-emerald-400 transition-all"
+                style={{ width: `${quizPct}%` }}
+              />
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E] p-5 space-y-2.5">
+            <div className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+              3. متوسط أعلى الدرجات المختبرة
+            </div>
+            <div className="flex items-baseline justify-between">
+              <span className="text-2xl font-extrabold text-[#001F4D] dark:text-white">
+                {eligibility.averageBestPercent !== null ? (
+                  <Ltr>{eligibility.averageBestPercent}%</Ltr>
+                ) : (
+                  'لم يُختبر بعد'
+                )}
+              </span>
+              <span className="text-xs text-slate-500 dark:text-slate-400">الحد الأدنى 80%</span>
+            </div>
+            <p className="text-xs text-slate-600 dark:text-slate-400">
+              يُحفظ أعلى تقييم لكل درس مع السماح بإعادة المحاولة في أي وقت.
+            </p>
+          </div>
+        </section>
+
       <section className="space-y-3">
         <h3 className="text-lg font-bold text-[#001F4D] dark:text-white">
-          الدروس الموصى بها في هذا المسار (<Ltr>{filteredLessons.length}</Ltr> درسًا)
+          خريطة {activeTrack.title} (<Ltr>{filteredLessons.length}</Ltr> درسًا)
         </h3>
         <div className="divide-y divide-slate-200 dark:divide-slate-800 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E]">
           {filteredLessons.map((lesson) => {
             const done = progress.completedLessons.includes(lesson.id);
+            const quizStatus = getLessonQuizStatus(progress, lesson.id);
+            const rec = progress.quizRecords?.[lesson.id];
+            const bestPct =
+              rec && rec.totalQuestions > 0 ? Math.round((rec.highestScore / rec.totalQuestions) * 100) : null;
+            const unit = CURRICULUM_UNITS.find((u) => u.id === lesson.unitId);
+
             return (
               <div key={lesson.id} className="p-4 flex flex-wrap items-center justify-between gap-3">
-                <div className="space-y-1">
-                  <div className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-2">
-                    <span>الدرس {lesson.number}</span>
-                    <span aria-hidden="true">·</span>
-                    <span>{lesson.contentStatus}</span>
-                    {done && (
+                <div className="space-y-1.5">
+                  <div className="text-xs text-slate-500 dark:text-slate-400 flex flex-wrap items-center gap-2">
+                    <span className="font-bold text-[#007574] dark:text-[#00D1CE]">الدرس {lesson.number}</span>
+                    {unit && (
                       <>
                         <span aria-hidden="true">·</span>
-                        <span className="inline-flex items-center gap-1 text-emerald-700 dark:text-emerald-400 font-semibold">
-                          <CheckCircle2 className="w-3.5 h-3.5" aria-hidden="true" />
-                          <span>مكتمل</span>
-                        </span>
+                        <span>الوحدة {unit.letter}</span>
+                      </>
+                    )}
+                    <span aria-hidden="true">·</span>
+                    {done ? (
+                      <span className="inline-flex items-center gap-1 text-emerald-700 dark:text-emerald-400 font-semibold">
+                        <CheckCircle2 className="w-3.5 h-3.5" aria-hidden="true" />
+                        <span>مكتمل</span>
+                      </span>
+                    ) : (
+                      <span>قيد المتابعة</span>
+                    )}
+
+                    {lesson.quiz.length > 0 && (
+                      <>
+                        <span aria-hidden="true">·</span>
+                        {quizStatus === 'not_attempted' && (
+                          <span className="rounded-full bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-[11px] font-semibold text-slate-600 dark:text-slate-300">
+                            لم يُختبر بعد
+                          </span>
+                        )}
+                        {quizStatus === 'passed' && bestPct !== null && (
+                          <span className="rounded-full bg-emerald-100 dark:bg-emerald-950/60 px-2 py-0.5 text-[11px] font-bold text-emerald-800 dark:text-emerald-300">
+                            مجتاز (<Ltr>{bestPct}%</Ltr>)
+                          </span>
+                        )}
+                        {quizStatus === 'failed' && bestPct !== null && (
+                          <span className="rounded-full bg-amber-100 dark:bg-amber-950/60 px-2 py-0.5 text-[11px] font-bold text-amber-900 dark:text-amber-300">
+                            لم يجتز (<Ltr>{bestPct}%</Ltr> — المطلوب <Ltr>80%</Ltr>)
+                          </span>
+                        )}
                       </>
                     )}
                   </div>
@@ -508,6 +638,78 @@ export const TracksPage: React.FC<NavProps> = ({ onNavigate, progress, onSelectT
           })}
         </div>
       </section>
+
+      {/* Track Certificate Unlock Card */}
+      <section
+          className={`rounded-xl border p-6 space-y-4 ${
+            eligibility.eligible
+              ? 'border-emerald-300 dark:border-emerald-800 bg-emerald-50/70 dark:bg-emerald-950/30'
+              : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E]'
+          }`}
+        >
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div className="space-y-1.5 max-w-2xl">
+              <div className="flex items-center gap-2">
+                {eligibility.eligible ? (
+                  <Award className="w-5 h-5 text-emerald-700 dark:text-emerald-400" aria-hidden="true" />
+                ) : (
+                  <Lock className="w-5 h-5 text-slate-500 dark:text-slate-400" aria-hidden="true" />
+                )}
+                <h3 className="text-lg font-bold text-[#001F4D] dark:text-white">
+                  شهادة إتمام {activeTrack.title} الصادرة عن المنصة
+                </h3>
+              </div>
+
+              {eligibility.eligible ? (
+                <p className="text-sm text-emerald-900 dark:text-emerald-200">
+                  تهانينا! استوفيت جميع شروط {activeTrack.title}: إكمال جميع الدروس (<Ltr>{eligibility.totalLessons}</Ltr>) واجتياز جميع الاختبارات (<Ltr>{eligibility.totalQuizzes}</Ltr>) بنسبة <Ltr>80%</Ltr> فأعلى.
+                </p>
+              ) : (
+                <div className="space-y-1 text-sm text-slate-600 dark:text-slate-300">
+                  <p>لفتح زر إصدار الشهادة، يجب استيفاء الشرطين معًا:</p>
+                  <ul className="list-disc pr-5 text-xs space-y-1">
+                    <li>
+                      إكمال جميع الدروس ({eligibility.missingLessonIds.length === 0 ? 'مكتمل بالكامل ✓' : `متبقي ${eligibility.missingLessonIds.length} درس بحاجة للإكمال`})
+                    </li>
+                    <li>
+                      اجتياز جميع اختبارات المسار بنسبة ≥ 80% ({eligibility.failedOrMissingQuizLessonIds.length === 0 ? 'مجتاز بالكامل ✓' : `متبقي ${eligibility.failedOrMissingQuizLessonIds.length} اختبار بحاجة لتحقيق 80%`})
+                    </li>
+                  </ul>
+                </div>
+              )}
+
+              {currentCertificate && (
+                <p className="text-xs font-semibold text-emerald-800 dark:text-emerald-300 pt-1">
+                  رقم الشهادة المثبت: <Ltr>{currentCertificate.certificateNumber}</Ltr>
+                </p>
+              )}
+            </div>
+
+            {eligibility.eligible && (
+              <button
+                type="button"
+                onClick={() => setCertModalOpen(true)}
+                className="inline-flex items-center gap-2 rounded-lg bg-[#001F4D] dark:bg-[#00D1CE] px-5 py-2.5 text-sm font-bold text-white dark:text-[#001F4D] hover:opacity-95"
+              >
+                <Award className="w-4 h-4" aria-hidden="true" />
+                <span>عرض وإصدار شهادة الإتمام</span>
+              </button>
+            )}
+          </div>
+        </section>
+
+      {onIssueCertificate && (
+        <CompletionCertificateModal
+          isOpen={certModalOpen}
+          onClose={() => setCertModalOpen(false)}
+          certificate={currentCertificate}
+          averageBestPercent={eligibility.averageBestPercent}
+          lessonsCount={eligibility.totalLessons}
+          trackTitle={activeTrack.title}
+          trackDescription={`إصدار وطباعة شهادة إتمام ${activeTrack.title}`}
+          onIssueCertificate={(recipientName) => onIssueCertificate(recipientName, progress.selectedTrack)}
+        />
+      )}
     </div>
   );
 };

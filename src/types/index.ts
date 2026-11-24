@@ -27,12 +27,19 @@ export interface ScientificMeta {
   limitations: string[];
 }
 
+export interface QuizReferenceCitation {
+  referenceId: string;
+  standardDoc: string;
+  sectionOrPage: string;
+}
+
 export interface LessonQuizQuestion {
   id: string;
   question: string;
   options: string[];
   correctIndex: number;
   explanation: string;
+  citation?: QuizReferenceCitation;
 }
 
 export interface WorkedExample {
@@ -294,6 +301,21 @@ export interface GlossaryEntry {
   referenceIds: string[];
 }
 
+export interface LessonQuizRecord {
+  highestScore: number;
+  totalQuestions: number;
+  passed: boolean; // highestScore / totalQuestions >= 0.8
+  attemptsCount: number;
+  firstPassedAt?: string;
+  lastAttemptAt: string;
+}
+
+export interface BeginnerCertificateRecord {
+  earnedAt: string;
+  recipientName: string;
+  certificateNumber: string; // MRS-BEG-YYYYMMDD-XXXX
+}
+
 export interface LocalUserProgress {
   selectedTrack: TrackId;
   completedLessons: string[];
@@ -301,5 +323,8 @@ export interface LocalUserProgress {
   lastLessonId: string | null;
   completedChecklists: Record<string, boolean[]>;
   scenarioScores: Record<string, { score: number; total: number }>;
+  quizRecords: Record<string, LessonQuizRecord>;
+  beginnerCertificate?: BeginnerCertificateRecord;
+  trackCertificates?: Partial<Record<TrackId, BeginnerCertificateRecord>>;
   theme: 'light' | 'dark';
 }
