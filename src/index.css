@@ -65,6 +65,25 @@
   font-variant-numeric: tabular-nums;
 }
 
+@keyframes splashZoomIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.88);
+  }
+  55% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.splash-logo-animate {
+  animation: splashZoomIn 1.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
 /* Print Stylesheet for A4 Arabic Reports & Scaled 1:50 Plans */
 @media print {
   @page {

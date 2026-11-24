@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Layout } from './components/Layout';
+import { DesignerSplash } from './components/DesignerSplash';
 import { HomePage, StartHerePage, TracksPage } from './pages/HomeStartTracksPages';
 import { LessonDetailPage, LibraryPage } from './pages/LibraryPages';
 import { EquipmentCatalogPage, EquipmentComparePage, EquipmentDetailPage } from './pages/EquipmentPages';
@@ -278,20 +279,23 @@ export default function App() {
   };
 
   return (
-    <Layout
-      currentPath={currentPath}
-      onNavigate={navigate}
-      progress={progress}
-      onToggleTheme={handleToggleTheme}
-      isOnline={pwa.isOnline}
-      isInstallable={pwa.isInstallable}
-      isInstalled={pwa.isInstalled}
-      isIOS={pwa.isIOS}
-      onInstallApp={pwa.installApp}
-      offlineState={pwa.offlineState}
-      onApplyUpdate={pwa.applyUpdateSafely}
-    >
-      {renderPage()}
-    </Layout>
+    <>
+      <DesignerSplash />
+      <Layout
+        currentPath={currentPath}
+        onNavigate={navigate}
+        progress={progress}
+        onToggleTheme={handleToggleTheme}
+        isOnline={pwa.isOnline}
+        isInstallable={pwa.isInstallable}
+        isInstalled={pwa.isInstalled}
+        isIOS={pwa.isIOS}
+        onInstallApp={pwa.installApp}
+        offlineState={pwa.offlineState}
+        onApplyUpdate={pwa.applyUpdateSafely}
+      >
+        {renderPage()}
+      </Layout>
+    </>
   );
 }
