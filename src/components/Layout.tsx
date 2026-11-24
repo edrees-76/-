@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import {
   Bookmark,
   Download,
+  ExternalLink,
   Menu,
   Moon,
   RefreshCw,
@@ -20,6 +21,8 @@ import type { LocalUserProgress } from '../types';
 import type { OfflinePackState } from '../hooks/usePWA';
 
 export const LOGO_PATH = '/assets/aistudio/_________________________________12eb8902.png';
+export const DESIGNER_LOGO_PATH = '/assets/aistudio/Gemini_Generated_Image_c0344966.jpeg';
+export const DESIGNER_CV_URL = 'https://edrees-elhery-cv.netlify.app/';
 
 interface LayoutProps {
   currentPath: string;
@@ -580,6 +583,51 @@ export const Layout: React.FC<LayoutProps> = ({
             <p className="mt-4 text-xs text-slate-500 dark:text-slate-400">
               البيانات والمسودات تُحفظ محليًا على هذا المتصفح فقط ولا تتزامن تلقائيًا ولا تحتوي حقولًا لبيانات المرضى.
             </p>
+          </div>
+        </div>
+
+        {/* Designer Attribution Bar */}
+        <div className="border-t border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-[#050E1D]/60">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap items-center justify-between gap-4 text-xs">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-lg bg-white p-1 border border-slate-200 dark:border-slate-700 shrink-0 flex items-center justify-center">
+                <img
+                  src={DESIGNER_LOGO_PATH}
+                  alt="شعار المصمم EFH — م. إدريس فتح الله الهرى"
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <div className="space-y-0.5">
+                <div className="font-bold text-[#001F4D] dark:text-white">
+                  إعداد وتصميم المنصة: م. إدريس فتح الله الهرى{' '}
+                  <span dir="ltr" className="ltr-inline font-semibold text-slate-500 dark:text-slate-400">
+                    (EFH)
+                  </span>
+                </div>
+                <div className="text-slate-600 dark:text-slate-400">
+                  مهندس قياسات إشعاعية · رئيس مختبر التحاليل والقياسات الإشعاعية — بنغازي
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-4">
+              <button
+                type="button"
+                onClick={() => handleGo('/about')}
+                className="font-semibold text-[#001F4D] dark:text-slate-200 hover:text-[#007574] dark:hover:text-[#00D1CE] hover:underline"
+              >
+                نبذة عن المصمم
+              </button>
+              <a
+                href={DESIGNER_CV_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#0D1B2E] px-3 py-1.5 font-bold text-[#001F4D] dark:text-[#00D1CE] hover:border-[#00D1CE] transition-colors"
+              >
+                <span>الصفحة الشخصية والسيرة الذاتية</span>
+                <ExternalLink className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+              </a>
+            </div>
           </div>
         </div>
       </footer>

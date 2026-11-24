@@ -170,6 +170,7 @@ export function usePWA() {
       '/icons/pwa-512x512.png',
       '/icons/apple-touch-icon.png',
       '/assets/aistudio/_________________________________12eb8902.png',
+      '/assets/aistudio/Gemini_Generated_Image_c0344966.jpeg',
     ]);
 
     document.querySelectorAll('script[src], link[rel="stylesheet"][href]').forEach((el) => {

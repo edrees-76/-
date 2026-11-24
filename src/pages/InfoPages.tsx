@@ -4,6 +4,7 @@ import {
   BookOpen,
   CheckCircle2,
   Download,
+  ExternalLink,
   HardDrive,
   RefreshCw,
   Search,
@@ -35,7 +36,7 @@ import {
   type FullBackupPayload,
 } from '../utils/storage';
 import { Breadcrumbs, Ltr, ReviewStatusText } from '../components/SharedUI';
-import { LOGO_PATH } from '../components/Layout';
+import { DESIGNER_CV_URL, DESIGNER_LOGO_PATH, LOGO_PATH } from '../components/Layout';
 import type { GlossaryEntry, LocalUserProgress, RoomPlanState } from '../types';
 import type { OfflinePackState } from '../hooks/usePWA';
 
@@ -362,6 +363,72 @@ export const AboutOfflinePage: React.FC<AboutOfflineProps> = ({
           <img src={LOGO_PATH} alt="شعار المسح الإشعاعي الطبي" className="w-full h-auto object-contain" />
         </div>
       </header>
+
+      {/* Designer & Creator Section */}
+      <section
+        id="designer"
+        aria-label="إعداد وتصميم المنصة"
+        className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E] p-6 space-y-5"
+      >
+        <div className="flex flex-col sm:flex-row items-start gap-6">
+          <div className="w-36 h-36 sm:w-40 sm:h-40 rounded-xl bg-white p-2 border border-slate-200 dark:border-slate-700 shrink-0 flex items-center justify-center">
+            <img
+              src={DESIGNER_LOGO_PATH}
+              alt="شعار المصمم EFH — Edrees F. Hery"
+              className="w-full h-full object-contain"
+            />
+          </div>
+
+          <div className="flex-1 space-y-3">
+            <div className="space-y-1">
+              <div className="text-xs font-bold text-[#007574] dark:text-[#00D1CE]">إعداد وتصميم المنصة</div>
+              <h2 className="text-2xl font-bold text-[#001F4D] dark:text-white">
+                م. إدريس فتح الله الهرى{' '}
+                <span className="text-sm font-semibold text-slate-500 dark:text-slate-400">
+                  (<Ltr>Edrees F. Hery · EFH</Ltr>)
+                </span>
+              </h2>
+              <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                مهندس قياسات إشعاعية · رئيس مختبر التحاليل والقياسات الإشعاعية — بنغازي (مركز القياسات الإشعاعية والتدريب)
+              </p>
+            </div>
+
+            <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+              خبرة عملية تمتد لأكثر من <Ltr>24</Ltr> عامًا في مجال الرقابة والقياسات الإشعاعية بمؤسسة الطاقة الذرية الليبية، تدرّج خلالها من مهندس قياسات إشعاعية إلى مدير إدارة القياسات الإشعاعية (<Ltr>2020–2023</Ltr>)، ثم مدير مركز القياسات الإشعاعية (<Ltr>2023–2025</Ltr>)، ورئيس مختبر التحاليل والقياسات الإشعاعية منذ <Ltr>2025</Ltr>. يحمل درجة البكالوريوس في الفيزياء من كلية العلوم بجامعة بنغازي (<Ltr>2000</Ltr>).
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+              <div className="rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-[#050E1D] p-3 space-y-1">
+                <div className="font-bold text-[#001F4D] dark:text-white">مجالات التخصص الفني</div>
+                <p className="text-slate-600 dark:text-slate-300">
+                  الكشف الإشعاعي (<Ltr>Radiation Detection</Ltr>)، تحليل أطياف أشعة غاما (<Ltr>Gamma-ray Spectroscopy</Ltr>)، وأجهزة المسح والقياس الإشعاعي ومقاييس الجرعات (<Ltr>Survey Meters &amp; Dosimeters</Ltr>).
+                </p>
+              </div>
+              <div className="rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-[#050E1D] p-3 space-y-1">
+                <div className="font-bold text-[#001F4D] dark:text-white">التحول الرقمي والتدريب المتخصص</div>
+                <p className="text-slate-600 dark:text-slate-300">
+                  مصمّم ومنفّذ منظومات رقمية متخصصة لمختبرات القياسات والجرعات والمصادر المشعة (إتقان، إنجاز، مسار، مايدوز)، ومُعد ومحاضر برنامج «الدورة المستندية لمختبر التحاليل الإشعاعية» وفق <Ltr>ISO/IEC 17025</Ltr>.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
+              <a
+                href={DESIGNER_CV_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg bg-[#00D1CE] px-4 py-2.5 text-xs font-bold text-[#001F4D] hover:opacity-90"
+              >
+                <span>زيارة الصفحة الشخصية والسيرة الذاتية</span>
+                <ExternalLink className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+              </a>
+              <span className="text-[11px] text-slate-500 dark:text-slate-400">
+                يُذكر هذا التعريف لبيان جهة الإعداد والتصميم، وتبقى المنصة تعليمية ومرجعية ولا تمثل اعتمادًا رسميًا.
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Offline & PWA Control Panel */}
       <section className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E] p-6 space-y-5">
