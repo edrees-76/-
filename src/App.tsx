@@ -1,6 +1,7 @@
 import { Suspense, lazy, useCallback, useEffect, useState } from 'react';
 import { Layout } from './components/Layout';
 import { DesignerSplash } from './components/DesignerSplash';
+import { RouteErrorBoundary } from './components/RouteErrorBoundary';
 import { HomePage, StartHerePage, TracksPage } from './pages/HomeStartTracksPages';
 import { usePWA } from './hooks/usePWA';
 import {
@@ -324,15 +325,17 @@ export default function App() {
         offlineState={pwa.offlineState}
         onApplyUpdate={pwa.applyUpdateSafely}
       >
-        <Suspense
-          fallback={
-            <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E] p-8 text-center text-sm text-slate-600 dark:text-slate-300">
-              جاري تحميل الصفحة...
-            </div>
-          }
-        >
-          {renderPage()}
-        </Suspense>
+        <RouteErrorBoundary>
+          <Suspense
+            fallback={
+              <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E] p-8 text-center text-sm text-slate-600 dark:text-slate-300">
+                جاري تحميل الصفحة...
+              </div>
+            }
+          >
+            {renderPage()}
+          </Suspense>
+        </RouteErrorBoundary>
       </Layout>
     </>
   );
