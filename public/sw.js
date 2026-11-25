@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'mrs-offline-v1.0.0-20261124';
+const CACHE_VERSION = 'mrs-offline-v1.0.1-20261125';
 const APP_SHELL_URLS = [
   '/',
   '/index.html',

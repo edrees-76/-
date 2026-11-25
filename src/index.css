@@ -104,6 +104,8 @@ html[data-design]:not(.dark) .border-\[\#001F4D\] { border-color: var(--navy-pri
 html[data-design] .bg-\[\#00D1CE\] { background-color: var(--turquoise-accent); color: var(--accent-fg) !important; }
 html[data-design]:not(.dark) .text-\[\#007574\] { color: var(--turquoise-text-light); }
 html[data-design]:not(.dark) .bg-\[\#E6FAFA\] { background-color: var(--surface-sky); }
+html[data-design].dark .text-slate-500 { color: #94A3B8; }
+html[data-design].dark .text-slate-600 { color: #CBD5E1; }
 html[data-design] .border-\[\#00D1CE\] { border-color: var(--turquoise-accent); }
 html[data-design] .rounded-xl { border-radius: var(--design-radius); box-shadow: var(--design-card-shadow); }
 html[data-design="cobalt"]:not(.dark) .bg-white {
