@@ -759,7 +759,7 @@ export const Layout: React.FC<LayoutProps> = ({
       )}
 
       {/* Main Content */}
-      <main id="main-content" className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 pt-8 pb-20 sm:pb-8">
+      <main id="main-content" className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 pt-5 sm:pt-8 pb-20 sm:pb-8 min-w-0">
         {children}
       </main>
 

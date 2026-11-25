@@ -88,7 +88,7 @@ export const HomePage: React.FC<NavProps> = ({ onNavigate, progress, onSelectTra
   return (
     <div className="space-y-12">
       {/* Calm Scientific Hero */}
-      <section className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E] p-6 sm:p-10">
+      <section className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E] p-4 sm:p-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           <div className="lg:col-span-8 space-y-5">
             <div className="text-xs font-semibold text-[#007574] dark:text-[#00D1CE]">
