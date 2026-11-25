@@ -2,7 +2,7 @@ import { Suspense, lazy, useCallback, useEffect, useState } from 'react';
 import { Layout } from './components/Layout';
 import { DesignerSplash } from './components/DesignerSplash';
 import { RouteErrorBoundary } from './components/RouteErrorBoundary';
-import { HomePage, StartHerePage, TracksPage } from './pages/HomeStartTracksPages';
+import { HomePage } from './pages/HomeStartTracksPages';
 import { usePWA } from './hooks/usePWA';
 import {
   issueTrackCertificate,
@@ -12,6 +12,8 @@ import {
 } from './utils/storage';
 import type { DesignId, LocalUserProgress, TrackId } from './types';
 
+const StartHerePage = lazy(() => import('./pages/HomeStartTracksPages').then((m) => ({ default: m.StartHerePage })));
+const TracksPage = lazy(() => import('./pages/HomeStartTracksPages').then((m) => ({ default: m.TracksPage })));
 const LibraryPage = lazy(() => import('./pages/LibraryPages').then((m) => ({ default: m.LibraryPage })));
 const LessonDetailPage = lazy(() => import('./pages/LibraryPages').then((m) => ({ default: m.LessonDetailPage })));
 const EquipmentCatalogPage = lazy(() => import('./pages/EquipmentPages').then((m) => ({ default: m.EquipmentCatalogPage })));

@@ -370,7 +370,7 @@ export const HomePage: React.FC<NavProps> = ({ onNavigate, progress, onSelectTra
   );
 };
 
-export const StartHerePage: React.FC<NavProps> = ({ onNavigate }) => (
+export const StartHerePage: React.FC<NavProps> = ({ onNavigate, progress, onSelectTrack }) => (
   <div className="space-y-8 max-w-4xl">
     <Breadcrumbs items={[{ label: 'الرئيسية', path: '/' }, { label: 'ابدأ من هنا' }]} onNavigate={onNavigate} />
 
@@ -418,6 +418,61 @@ export const StartHerePage: React.FC<NavProps> = ({ onNavigate }) => (
           طبّق <button type="button" onClick={() => onNavigate('/scenarios/scen-01-general-xray')} className="font-bold text-[#007574] dark:text-[#00D1CE] hover:underline">الحالة المرجعية للأشعة العامة</button>، ثم راجع التقرير المقابل لها في <button type="button" onClick={() => onNavigate('/forms')} className="font-bold text-[#007574] dark:text-[#00D1CE] hover:underline">النماذج والتقارير F01–F07</button>.
         </li>
       </ol>
+    </section>
+
+    <section className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E] p-6 space-y-4">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <h2 className="text-xl font-bold text-[#001F4D] dark:text-white">ثالثًا: اختر مسارك التعليمي الموصى به</h2>
+          <p className="text-xs text-slate-600 dark:text-slate-300 mt-1">
+            اختر المسار المناسب لخبرتك للانتقال مباشرة إلى صفحة المسارات ومتابعة تقدمك.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => onNavigate('/tracks')}
+          className="text-xs font-bold text-[#007574] dark:text-[#00D1CE] hover:underline"
+        >
+          عرض كافة تفاصيل المسارات ←
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {(['beginner', 'practitioner', 'quick-review'] as TrackId[]).map((tid) => {
+          const track = TRACK_DETAILS[tid];
+          const isSelected = progress.selectedTrack === tid;
+          return (
+            <div
+              key={tid}
+              className={`rounded-xl border p-4 flex flex-col justify-between gap-3 transition-colors ${
+                isSelected
+                  ? 'border-[#007574] dark:border-[#00D1CE] bg-[#E6FAFA]/50 dark:bg-[#050E1D]'
+                  : 'border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-[#050E1D]'
+              }`}
+            >
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="font-bold text-sm text-[#001F4D] dark:text-white">{track.title}</span>
+                  {isSelected && (
+                    <span className="text-[11px] font-bold text-[#007574] dark:text-[#00D1CE]">مختار</span>
+                  )}
+                </div>
+                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">{track.description}</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  onSelectTrack(tid);
+                  onNavigate('/tracks');
+                }}
+                className="w-full rounded-lg bg-[#001F4D] dark:bg-[#00D1CE] px-3 py-2 text-xs font-bold text-white dark:text-[#001F4D] hover:opacity-90 transition-opacity"
+              >
+                {isSelected ? 'متابعة هذا المسار' : 'اختيار هذا المسار والمتابعة'}
+              </button>
+            </div>
+          );
+        })}
+      </div>
     </section>
   </div>
 );
