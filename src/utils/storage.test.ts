@@ -138,10 +138,9 @@ test('Certificate issuance locks earnedAt and certificateNumber across name upda
   assert.equal(cert2.certificateNumber, firstNumber);
 });
 
-test('Multi-track certificates & all non-WIP lessons have 4 cited questions', () => {
-  const activeLessons = LESSONS.filter((l) => l.contentStatus !== 'قيد الإعداد');
-  assert.equal(activeLessons.length, 24);
-  assert.ok(activeLessons.every((l) => l.quiz.length === 4 && l.quiz.every((q) => Boolean(q.citation))));
+test('Multi-track certificates & all 25 lessons have 4 cited questions', () => {
+  assert.equal(LESSONS.length, 25);
+  assert.ok(LESSONS.every((l) => l.contentStatus === 'مكتمل' && l.quiz.length === 4 && l.quiz.every((q) => Boolean(q.citation))));
 
   let prog: LocalUserProgress = { ...DEFAULT_USER_PROGRESS, quizRecords: {} };
   prog = issueTrackCertificate(prog, 'practitioner', 'م. سارة خالد', new Date('2026-11-25T14:00:00Z'));

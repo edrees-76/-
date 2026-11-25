@@ -125,6 +125,19 @@ export const REFERENCES: ReferenceItem[] = [
     status: 'يحتاج مراجعة',
     notes: 'المنصة تعليمية للمسح والتوثيق ولا تستبدل تقارير تصميم التدريع المعتمدة.',
   },
+  {
+    id: 'ncrp-144',
+    code: 'NCRP Report No. 144',
+    title: 'Radiation Protection for Particle Accelerator Facilities',
+    organization: 'المجلس الوطني الأمريكي للوقاية من الإشعاع والقياسات (NCRP)',
+    edition: 'NCRP Report No. 144',
+    year: '2003',
+    sectionOrPage: 'تقدير حدود المصدر للنيوترونات، التدريع الخرساني، الـ Skyshine، التنشيط، وأجهزة الرصد ممتدة المدى',
+    category: 'معيار دولي',
+    lastReviewed: LAST_GLOBAL_REVIEW_DATE,
+    status: 'مُراجع',
+    notes: 'المرجع الأساسي لتصميم التدريع ومسوحات الوقاية الإشعاعية لمسرعات البروتونات والأيونات الثقيلة والسيكلوترونات.',
+  },
   // Manufacturer datasheets cited in the attached Equipment Illustrated Guide
   {
     id: 'ds-raysafe-452',
