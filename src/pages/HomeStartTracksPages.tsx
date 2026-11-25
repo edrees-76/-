@@ -188,6 +188,59 @@ export const HomePage: React.FC<NavProps> = ({ onNavigate, progress, onSelectTra
         </div>
       </section>
 
+      {/* Dual-Mode Workspace Hub: Learning Mode vs Field Work Mode */}
+      <section className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E] p-5 space-y-3">
+          <div className="flex items-center justify-between gap-2">
+            <h2 className="text-base font-bold text-[#001F4D] dark:text-white">وضع التعلّم والتأهيل</h2>
+            <span className="text-[11px] font-bold text-[#007574] dark:text-[#00D1CE]">للمتدربين والدارسين</span>
+          </div>
+          <div className="grid grid-cols-2 gap-2.5 text-xs">
+            {[
+              { title: 'ابدأ من هنا', desc: 'خريطة المنصة و20 دقيقة', path: '/start' },
+              { title: 'المسارات التعليمية', desc: '3 مسارات + شهادة إتمام', path: '/tracks' },
+              { title: 'المكتبة (25 درسًا)', desc: 'دروس واختبارات وقوائم', path: '/library' },
+              { title: 'الحالات (8 حالات)', desc: 'تطبيقات ميدانية تفاعلية', path: '/scenarios' },
+            ].map((card) => (
+              <button
+                key={card.path}
+                type="button"
+                onClick={() => onNavigate(card.path)}
+                className="text-right rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-[#050E1D] p-3 hover:border-[#007574] dark:hover:border-[#00D1CE] transition-colors"
+              >
+                <div className="font-bold text-[#001F4D] dark:text-white">{card.title}</div>
+                <div className="text-[11px] text-slate-600 dark:text-slate-400 mt-0.5">{card.desc}</div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E] p-5 space-y-3">
+          <div className="flex items-center justify-between gap-2">
+            <h2 className="text-base font-bold text-[#001F4D] dark:text-white">وضع العمل الميداني السريع</h2>
+            <span className="text-[11px] font-bold text-[#007574] dark:text-[#00D1CE]">للعيادات والمستشفيات</span>
+          </div>
+          <div className="grid grid-cols-2 gap-2.5 text-xs">
+            {[
+              { title: 'دليل الأجهزة (14)', desc: 'مواصفات وصور ومقارنة', path: '/equipment' },
+              { title: 'الحاسبات الموثقة (8)', desc: 'جرعة، تربيع عكسي، HVL', path: '/calculators' },
+              { title: 'المخطط التفاعلي', desc: 'هندسة الغرفة بمقياس 1:50', path: '/planner' },
+              { title: 'النماذج (F01–F07)', desc: 'تقارير جاهزة للطباعة A4', path: '/forms' },
+            ].map((card) => (
+              <button
+                key={card.path}
+                type="button"
+                onClick={() => onNavigate(card.path)}
+                className="text-right rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-[#050E1D] p-3 hover:border-[#007574] dark:hover:border-[#00D1CE] transition-colors"
+              >
+                <div className="font-bold text-[#001F4D] dark:text-white">{card.title}</div>
+                <div className="text-[11px] text-slate-600 dark:text-slate-400 mt-0.5">{card.desc}</div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Three Learning Tracks */}
       <section className="space-y-4">
         <div className="flex flex-wrap items-end justify-between gap-2">

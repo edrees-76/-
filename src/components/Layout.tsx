@@ -1,9 +1,14 @@
 import React, { useMemo, useState } from 'react';
 import {
   Bookmark,
+  BookOpen,
+  Calculator,
   Check,
+  ChevronDown,
+  Cpu,
   Download,
   ExternalLink,
+  Home,
   LogOut,
   Menu,
   Moon,
@@ -44,14 +49,49 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
-const PRIMARY_NAV = [
-  { label: 'ابدأ من هنا', path: '/start' },
-  { label: 'المكتبة', path: '/library' },
-  { label: 'الأجهزة', path: '/equipment' },
-  { label: 'المخطط', path: '/planner' },
-  { label: 'الحاسبات', path: '/calculators' },
-  { label: 'النماذج', path: '/forms' },
-  { label: 'الحالات', path: '/scenarios' },
+const NAV_GROUPS: {
+  id: string;
+  label: string;
+  items: { label: string; path: string }[];
+}[] = [
+  {
+    id: 'learn',
+    label: 'التعلّم',
+    items: [
+      { label: 'ابدأ من هنا', path: '/start' },
+      { label: 'المسارات التعليمية', path: '/tracks' },
+      { label: 'المكتبة التعليمية (25 درسًا)', path: '/library' },
+      { label: 'الحالات التدريبية (8 حالات)', path: '/scenarios' },
+    ],
+  },
+  {
+    id: 'tools',
+    label: 'الأدوات الميدانية',
+    items: [
+      { label: 'دليل أجهزة القياس (14)', path: '/equipment' },
+      { label: 'مقارنة الأجهزة', path: '/compare' },
+      { label: 'المخطط التفاعلي للغرفة', path: '/planner' },
+      { label: 'الحاسبات الموثقة (8)', path: '/calculators' },
+      { label: 'النماذج والتقارير (F01–F07)', path: '/forms' },
+    ],
+  },
+  {
+    id: 'ref',
+    label: 'المرجع',
+    items: [
+      { label: 'المصطلحات العلمية', path: '/glossary' },
+      { label: 'المراجع ومنهجية المراجعة', path: '/references' },
+      { label: 'حول والعمل دون اتصال', path: '/about' },
+      { label: 'الخصوصية وحدود الاستخدام', path: '/privacy' },
+    ],
+  },
+];
+
+const MOBILE_BOTTOM_TABS = [
+  { label: 'الرئيسية', path: '/', icon: Home },
+  { label: 'المكتبة', path: '/library', icon: BookOpen },
+  { label: 'الأجهزة', path: '/equipment', icon: Cpu },
+  { label: 'الحاسبات', path: '/calculators', icon: Calculator },
 ];
 
 const ALL_PAGES_LINKS = [
@@ -123,6 +163,7 @@ export const Layout: React.FC<LayoutProps> = ({
   const [searchOpen, setSearchOpen] = useState(false);
   const [bookmarksOpen, setBookmarksOpen] = useState(false);
   const [designMenuOpen, setDesignMenuOpen] = useState(false);
+  const [openNavGroup, setOpenNavGroup] = useState<string | null>(null);
   const [iosGuideOpen, setIosGuideOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -293,25 +334,62 @@ export const Layout: React.FC<LayoutProps> = ({
             </button>
           </div>
 
-          {/* Zone 2 (Center): Clean single-line typography nav links */}
-          <nav aria-label="التنقل الرئيسي" className="hidden lg:flex items-center justify-center gap-3.5 xl:gap-5 text-[13px] font-semibold">
-            {PRIMARY_NAV.map((item) => {
-              const active =
-                currentPath === item.path ||
-                (item.path !== '/' && currentPath.startsWith(item.path));
+          {/* Zone 2 (Center): Grouped 3-Menu Navigation */}
+          <nav aria-label="التنقل الرئيسي" className="hidden lg:flex items-center justify-center gap-2 text-[13px] font-semibold">
+            {NAV_GROUPS.map((group) => {
+              const isGroupActive = group.items.some(
+                (item) => currentPath === item.path || (item.path !== '/' && currentPath.startsWith(item.path))
+              );
+              const isOpen = openNavGroup === group.id;
               return (
-                <button
-                  key={item.path}
-                  type="button"
-                  onClick={() => handleGo(item.path)}
-                  className={`whitespace-nowrap shrink-0 py-1 border-b-2 transition-colors ${
-                    active
-                      ? 'border-[#00D1CE] text-[#001F4D] dark:text-[#00D1CE]'
-                      : 'border-transparent text-slate-600 dark:text-slate-300 hover:text-[#001F4D] dark:hover:text-white'
-                  }`}
-                >
-                  {item.label}
-                </button>
+                <div key={group.id} className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setOpenNavGroup(isOpen ? null : group.id)}
+                    aria-expanded={isOpen}
+                    className={`inline-flex items-center gap-1 rounded-lg px-3 py-1.5 transition-colors whitespace-nowrap ${
+                      isGroupActive || isOpen
+                        ? 'bg-[#E6FAFA] dark:bg-[#0D1B2E] text-[#001F4D] dark:text-[#00D1CE]'
+                        : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#0D1B2E] hover:text-[#001F4D] dark:hover:text-white'
+                    }`}
+                  >
+                    <span>{group.label}</span>
+                    <ChevronDown className={`w-3.5 h-3.5 transition-transform ${isOpen ? 'rotate-180' : ''}`} aria-hidden="true" />
+                  </button>
+
+                  {isOpen && (
+                    <>
+                      <div className="fixed inset-0 z-40" onClick={() => setOpenNavGroup(null)} aria-hidden="true" />
+                      <div
+                        role="menu"
+                        className="absolute right-0 mt-2 w-60 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0D1B2E] p-1.5 shadow-xl z-50 space-y-0.5"
+                      >
+                        {group.items.map((item) => {
+                          const active =
+                            currentPath === item.path || (item.path !== '/' && currentPath.startsWith(item.path));
+                          return (
+                            <button
+                              key={item.path}
+                              type="button"
+                              role="menuitem"
+                              onClick={() => {
+                                setOpenNavGroup(null);
+                                handleGo(item.path);
+                              }}
+                              className={`w-full text-right rounded-lg px-3 py-2 text-xs font-semibold transition-colors ${
+                                active
+                                  ? 'bg-[#E6FAFA] dark:bg-[#001F4D] text-[#001F4D] dark:text-[#00D1CE]'
+                                  : 'text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/60'
+                              }`}
+                            >
+                              {item.label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </>
+                  )}
+                </div>
               );
             })}
           </nav>
@@ -681,12 +759,12 @@ export const Layout: React.FC<LayoutProps> = ({
       )}
 
       {/* Main Content */}
-      <main id="main-content" className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-8">
+      <main id="main-content" className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 pt-8 pb-20 sm:pb-8">
         {children}
       </main>
 
       {/* Clean Institutional Footer */}
-      <footer className="no-print border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E] mt-12">
+      <footer className="no-print border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E] mt-12 mb-16 sm:mb-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 grid grid-cols-1 md:grid-cols-4 gap-8 text-sm">
           <div className="space-y-3 md:col-span-1">
             <div className="w-40 bg-white rounded-lg p-2 border border-slate-200">
@@ -781,6 +859,35 @@ export const Layout: React.FC<LayoutProps> = ({
           </div>
         </div>
       </footer>
+
+      {/* Mobile Bottom Tab Bar for Quick Field Navigation */}
+      <nav
+        aria-label="التنقل السريع على الهاتف"
+        className="sm:hidden no-print fixed bottom-0 inset-x-0 z-30 h-16 bg-white/95 dark:bg-[#050E1D]/95 backdrop-blur border-t border-slate-200 dark:border-slate-800 grid grid-cols-4"
+      >
+        {MOBILE_BOTTOM_TABS.map((tab) => {
+          const Icon = tab.icon;
+          const active =
+            tab.path === '/'
+              ? currentPath === '/'
+              : currentPath === tab.path || currentPath.startsWith(tab.path);
+          return (
+            <button
+              key={tab.path}
+              type="button"
+              onClick={() => handleGo(tab.path)}
+              className={`flex flex-col items-center justify-center gap-1 text-[11px] font-bold transition-colors ${
+                active
+                  ? 'text-[#007574] dark:text-[#00D1CE]'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-[#001F4D] dark:hover:text-white'
+              }`}
+            >
+              <Icon className="w-4 h-4" aria-hidden="true" />
+              <span>{tab.label}</span>
+            </button>
+          );
+        })}
+      </nav>
     </div>
   );
 };

@@ -209,7 +209,7 @@ export const LessonDetailPage: React.FC<LessonDetailProps> = ({
       : null;
 
   return (
-    <article className="space-y-8 max-w-4xl">
+    <article className="space-y-8 max-w-6xl">
       <Breadcrumbs
         items={[
           { label: 'الرئيسية', path: '/' },
@@ -323,123 +323,129 @@ export const LessonDetailPage: React.FC<LessonDetailProps> = ({
         </div>
       </section>
 
-      {/* Main Content Sections */}
-      <div className="space-y-6">
-        {lesson.sections.map((sec, idx) => (
-          <section key={idx} className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E] p-6 space-y-3">
-            <h2 className="text-xl font-bold text-[#001F4D] dark:text-white">{sec.heading}</h2>
-            <p className="text-sm sm:text-base leading-relaxed text-[#334155] dark:text-slate-300">{sec.body}</p>
-            {sec.bullets && (
-              <ul className="list-disc pr-5 space-y-2 text-sm text-slate-700 dark:text-slate-300 pt-1">
-                {sec.bullets.map((b, i) => (
-                  <li key={i}>{b}</li>
-                ))}
-              </ul>
-            )}
-          </section>
-        ))}
-      </div>
-
-      {/* Quantities & Units */}
-      <section className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E] p-6 space-y-3">
-        <h2 className="text-lg font-bold text-[#001F4D] dark:text-white">الكميات والوحدات المستخدمة</h2>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm border-collapse">
-            <thead>
-              <tr className="border-b border-slate-200 dark:border-slate-700 text-right bg-slate-50 dark:bg-[#050E1D]">
-                <th className="p-2.5 font-bold text-[#001F4D] dark:text-white">الرمز</th>
-                <th className="p-2.5 font-bold text-[#001F4D] dark:text-white">الكمية</th>
-                <th className="p-2.5 font-bold text-[#001F4D] dark:text-white">الوحدة</th>
-                <th className="p-2.5 font-bold text-[#001F4D] dark:text-white">ملاحظة علمية</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
-              {lesson.quantitiesAndUnits.map((q, i) => (
-                <tr key={i}>
-                  <td className="p-2.5"><Ltr className="font-semibold text-[#001F4D] dark:text-[#00D1CE]">{q.symbol}</Ltr></td>
-                  <td className="p-2.5 font-semibold">{q.name}</td>
-                  <td className="p-2.5"><Ltr>{q.unit}</Ltr></td>
-                  <td className="p-2.5 text-slate-600 dark:text-slate-300">{q.note}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      {/* Workflow Steps */}
-      <section className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E] p-6 space-y-3">
-        <h2 className="text-lg font-bold text-[#001F4D] dark:text-white">خطوات العمل التعليمية</h2>
-        <ol className="list-decimal pr-5 space-y-2 text-sm text-slate-700 dark:text-slate-300">
-          {lesson.workflowSteps.map((s, i) => (
-            <li key={i}>{s}</li>
-          ))}
-        </ol>
-      </section>
-
-      {/* Worked Example (if verified/available) */}
-      {lesson.workedExample && (
-        <section className="rounded-xl border border-[#007574]/30 dark:border-[#00D1CE]/30 bg-[#E6FAFA]/60 dark:bg-[#0D2533]/60 p-6 space-y-3">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <h2 className="text-lg font-bold text-[#001F4D] dark:text-white">{lesson.workedExample.title}</h2>
-            <span className="text-xs font-bold text-[#007574] dark:text-[#00D1CE]">
-              تصنيف البيانات: {lesson.workedExample.dataType}
-            </span>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* Main Lesson Column */}
+        <div className="lg:col-span-8 space-y-6">
+          {/* Main Content Sections */}
+          <div className="space-y-6">
+            {lesson.sections.map((sec, idx) => (
+              <section key={idx} className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E] p-6 space-y-3">
+                <h2 className="text-xl font-bold text-[#001F4D] dark:text-white">{sec.heading}</h2>
+                <p className="text-sm sm:text-base leading-relaxed text-[#334155] dark:text-slate-300">{sec.body}</p>
+                {sec.bullets && (
+                  <ul className="list-disc pr-5 space-y-2 text-sm text-slate-700 dark:text-slate-300 pt-1">
+                    {sec.bullets.map((b, i) => (
+                      <li key={i}>{b}</li>
+                    ))}
+                  </ul>
+                )}
+              </section>
+            ))}
           </div>
-          <p className="text-sm text-slate-800 dark:text-slate-200">{lesson.workedExample.scenario}</p>
-          <ol className="list-decimal pr-5 space-y-1.5 text-sm text-slate-800 dark:text-slate-200">
-            {lesson.workedExample.steps.map((st, i) => (
-              <li key={i}>{st}</li>
-            ))}
-          </ol>
-          <p className="text-sm font-bold text-[#001F4D] dark:text-[#00D1CE] pt-1">
-            الخلاصة: {lesson.workedExample.result}
-          </p>
-          <p className="text-xs text-slate-600 dark:text-slate-400">تنبيه: {lesson.workedExample.caution}</p>
-        </section>
-      )}
 
-      {/* Common Mistakes & Interactive Checklist */}
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E] p-5 space-y-2">
-          <h2 className="text-base font-bold text-[#001F4D] dark:text-white">أخطاء شائعة يجب تجنبها</h2>
-          <ul className="list-disc pr-5 space-y-1.5 text-sm text-slate-700 dark:text-slate-300">
-            {lesson.commonMistakes.map((m, i) => (
-              <li key={i}>{m}</li>
-            ))}
-          </ul>
+          {/* Quantities & Units */}
+          <section className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E] p-6 space-y-3">
+            <h2 className="text-lg font-bold text-[#001F4D] dark:text-white">الكميات والوحدات المستخدمة</h2>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm border-collapse">
+                <thead>
+                  <tr className="border-b border-slate-200 dark:border-slate-700 text-right bg-slate-50 dark:bg-[#050E1D]">
+                    <th className="p-2.5 font-bold text-[#001F4D] dark:text-white">الرمز</th>
+                    <th className="p-2.5 font-bold text-[#001F4D] dark:text-white">الكمية</th>
+                    <th className="p-2.5 font-bold text-[#001F4D] dark:text-white">الوحدة</th>
+                    <th className="p-2.5 font-bold text-[#001F4D] dark:text-white">ملاحظة علمية</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
+                  {lesson.quantitiesAndUnits.map((q, i) => (
+                    <tr key={i}>
+                      <td className="p-2.5"><Ltr className="font-semibold text-[#001F4D] dark:text-[#00D1CE]">{q.symbol}</Ltr></td>
+                      <td className="p-2.5 font-semibold">{q.name}</td>
+                      <td className="p-2.5"><Ltr>{q.unit}</Ltr></td>
+                      <td className="p-2.5 text-slate-600 dark:text-slate-300">{q.note}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          {/* Workflow Steps */}
+          <section className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E] p-6 space-y-3">
+            <h2 className="text-lg font-bold text-[#001F4D] dark:text-white">خطوات العمل التعليمية</h2>
+            <ol className="list-decimal pr-5 space-y-2 text-sm text-slate-700 dark:text-slate-300">
+              {lesson.workflowSteps.map((s, i) => (
+                <li key={i}>{s}</li>
+              ))}
+            </ol>
+          </section>
+
+          {/* Worked Example (if verified/available) */}
+          {lesson.workedExample && (
+            <section className="rounded-xl border border-[#007574]/30 dark:border-[#00D1CE]/30 bg-[#E6FAFA]/60 dark:bg-[#0D2533]/60 p-6 space-y-3">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <h2 className="text-lg font-bold text-[#001F4D] dark:text-white">{lesson.workedExample.title}</h2>
+                <span className="text-xs font-bold text-[#007574] dark:text-[#00D1CE]">
+                  تصنيف البيانات: {lesson.workedExample.dataType}
+                </span>
+              </div>
+              <p className="text-sm text-slate-800 dark:text-slate-200">{lesson.workedExample.scenario}</p>
+              <ol className="list-decimal pr-5 space-y-1.5 text-sm text-slate-800 dark:text-slate-200">
+                {lesson.workedExample.steps.map((st, i) => (
+                  <li key={i}>{st}</li>
+                ))}
+              </ol>
+              <p className="text-sm font-bold text-[#001F4D] dark:text-[#00D1CE] pt-1">
+                الخلاصة: {lesson.workedExample.result}
+              </p>
+              <p className="text-xs text-slate-600 dark:text-slate-400">تنبيه: {lesson.workedExample.caution}</p>
+            </section>
+          )}
+
+          {/* Common Mistakes */}
+          <section className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E] p-5 space-y-2">
+            <h2 className="text-base font-bold text-[#001F4D] dark:text-white">أخطاء شائعة يجب تجنبها</h2>
+            <ul className="list-disc pr-5 space-y-1.5 text-sm text-slate-700 dark:text-slate-300">
+              {lesson.commonMistakes.map((m, i) => (
+                <li key={i}>{m}</li>
+              ))}
+            </ul>
+          </section>
+
+          {/* Scientific References & Meta */}
+          <ScientificMetaPanel meta={lesson.meta} onNavigate={onNavigate} />
         </div>
-        <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E] p-5 space-y-2">
-          <h2 className="text-base font-bold text-[#001F4D] dark:text-white">قائمة تحقق تطبيقية (تُحفظ محليًا)</h2>
-          <ul className="space-y-2 text-sm text-slate-700 dark:text-slate-300">
-            {lesson.checklist.map((item, i) => (
-              <li key={i}>
-                <label className="flex items-start gap-2.5 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={Boolean(checklistState[i])}
-                    onChange={() => onToggleChecklist(`lesson_${lesson.id}`, i, lesson.checklist.length)}
-                    className="mt-1 h-4 w-4 accent-[#001F4D] dark:accent-[#00D1CE]"
-                  />
-                  <span className={checklistState[i] ? 'line-through opacity-75' : ''}>{item}</span>
-                </label>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
 
-      {/* Quiz with Explanations & Citations */}
-      <LessonQuizCard
-        lessonId={lesson.id}
-        questions={lesson.quiz}
-        quizRecord={quizRecord}
-        onSaveAttempt={onSaveQuizAttempt}
-        onNavigate={onNavigate}
-      />
+        {/* Sticky Interactive Sidebar: Checklist + Quiz + Lesson Navigation */}
+        <aside className="lg:col-span-4 lg:sticky lg:top-20 space-y-5">
+          <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E] p-5 space-y-2.5">
+            <h2 className="text-base font-bold text-[#001F4D] dark:text-white">قائمة تحقق تطبيقية (تُحفظ محليًا)</h2>
+            <ul className="space-y-2 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+              {lesson.checklist.map((item, i) => (
+                <li key={i}>
+                  <label className="flex items-start gap-2.5 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={Boolean(checklistState[i])}
+                      onChange={() => onToggleChecklist(`lesson_${lesson.id}`, i, lesson.checklist.length)}
+                      className="mt-1 h-4 w-4 accent-[#001F4D] dark:accent-[#00D1CE]"
+                    />
+                    <span className={checklistState[i] ? 'line-through opacity-75' : ''}>{item}</span>
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-      {/* Scientific References & Meta */}
-      <ScientificMetaPanel meta={lesson.meta} onNavigate={onNavigate} />
+          <LessonQuizCard
+            lessonId={lesson.id}
+            questions={lesson.quiz}
+            quizRecord={quizRecord}
+            onSaveAttempt={onSaveQuizAttempt}
+            onNavigate={onNavigate}
+          />
+        </aside>
+      </div>
 
       {/* Prev / Next Navigation */}
       <nav aria-label="التنقل بين الدروس" className="no-print flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">

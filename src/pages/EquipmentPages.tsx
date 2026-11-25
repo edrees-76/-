@@ -204,6 +204,22 @@ export const EquipmentCatalogPage: React.FC<EquipmentCatalogProps> = ({
           </table>
         </div>
       </section>
+
+      {/* Floating Compare Bar */}
+      {compareIds.length >= 2 && (
+        <div className="no-print fixed bottom-18 sm:bottom-5 inset-x-3 sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 z-30 rounded-xl border border-[#007574]/40 dark:border-[#00D1CE]/40 bg-[#001F4D] text-white px-4 py-2.5 shadow-xl flex items-center justify-between gap-4">
+          <span className="text-xs font-semibold">
+            مختار للمقارنة: <strong>{compareIds.length}</strong> / 3 أجهزة
+          </span>
+          <button
+            type="button"
+            onClick={() => onNavigate('/compare')}
+            className="rounded-lg bg-[#00D1CE] px-3.5 py-1.5 text-xs font-bold text-[#001F4D] hover:opacity-90 whitespace-nowrap"
+          >
+            قارن الآن ({compareIds.length})
+          </button>
+        </div>
+      )}
     </div>
   );
 };
@@ -382,6 +398,38 @@ export const EquipmentDetailPage: React.FC<EquipmentDetailProps> = ({
           <span>سياق الترشيح المشروط بالمهمة</span>
         </h2>
         <p className="text-sm text-slate-800 dark:text-slate-200">{eq.recommendationContext}</p>
+      </section>
+
+      <section className="no-print rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E] p-5 flex flex-wrap items-center justify-between gap-3">
+        <div className="space-y-0.5">
+          <h2 className="text-sm font-bold text-[#001F4D] dark:text-white">التطبيق العملي والأدوات المرتبطة</h2>
+          <p className="text-xs text-slate-600 dark:text-slate-400">
+            جرّب تطبيق مواصفات هذا الجهاز في الحالات التدريبية أو الحاسبات الموثقة أو قارنه مع أجهزة أخرى.
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => onNavigate('/calculators')}
+            className="rounded-lg border border-slate-300 dark:border-slate-700 px-3 py-1.5 text-xs font-bold text-[#001F4D] dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
+          >
+            الحاسبات الموثقة
+          </button>
+          <button
+            type="button"
+            onClick={() => onNavigate('/scenarios')}
+            className="rounded-lg border border-slate-300 dark:border-slate-700 px-3 py-1.5 text-xs font-bold text-[#001F4D] dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
+          >
+            الحالات التدريبية
+          </button>
+          <button
+            type="button"
+            onClick={() => onNavigate('/compare')}
+            className="rounded-lg bg-[#001F4D] dark:bg-[#00D1CE] px-3 py-1.5 text-xs font-bold text-white dark:text-[#001F4D]"
+          >
+            صفحة المقارنة
+          </button>
+        </div>
       </section>
 
       <ScientificMetaPanel meta={eq.meta} onNavigate={onNavigate} />

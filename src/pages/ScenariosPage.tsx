@@ -411,6 +411,38 @@ export const ScenarioDetailPage: React.FC<ScenarioDetailProps> = ({
         </div>
       </section>
 
+      <section className="no-print rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E] p-5 flex flex-wrap items-center justify-between gap-3">
+        <div className="space-y-0.5">
+          <h2 className="text-sm font-bold text-[#001F4D] dark:text-white">الأدوات المرتبطة بهذه الحالة</h2>
+          <p className="text-xs text-slate-600 dark:text-slate-400">
+            انتقل مباشرة لإجراء الحسابات أو توثيق القياسات في المخطط والنماذج الرسمية.
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => onNavigate('/calculators')}
+            className="rounded-lg border border-slate-300 dark:border-slate-700 px-3 py-1.5 text-xs font-bold text-[#001F4D] dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
+          >
+            فتح الحاسبات
+          </button>
+          <button
+            type="button"
+            onClick={() => onNavigate('/planner')}
+            className="rounded-lg border border-slate-300 dark:border-slate-700 px-3 py-1.5 text-xs font-bold text-[#001F4D] dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
+          >
+            المخطط التفاعلي
+          </button>
+          <button
+            type="button"
+            onClick={() => onNavigate('/forms')}
+            className="rounded-lg bg-[#001F4D] dark:bg-[#00D1CE] px-3 py-1.5 text-xs font-bold text-white dark:text-[#001F4D]"
+          >
+            النماذج والتقارير F01–F07
+          </button>
+        </div>
+      </section>
+
       <ScientificMetaPanel meta={sc.meta} onNavigate={onNavigate} />
     </article>
   );
