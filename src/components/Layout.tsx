@@ -261,15 +261,15 @@ export const Layout: React.FC<LayoutProps> = ({
 
       {/* Compact Sticky Top Header (Balanced Three-Zone RTL Layout) */}
       <header className="no-print sticky top-0 z-40 h-16 bg-white/95 dark:bg-[#050E1D]/95 backdrop-blur border-b border-slate-200 dark:border-slate-800">
-        <div className="max-w-7xl mx-auto h-full px-3 sm:px-6 flex items-center justify-between gap-3">
+        <div className="max-w-7xl mx-auto h-full px-2.5 sm:px-6 flex items-center justify-between gap-2 sm:gap-3">
           {/* Zone 1 (Right): Menu Toggle + Brand */}
-          <div className="flex items-center gap-2 sm:gap-2.5 min-w-0 shrink">
+          <div className="flex items-center gap-1.5 sm:gap-2.5 min-w-0 shrink-0">
             <button
               type="button"
               onClick={() => setMobileMenuOpen((v) => !v)}
               aria-label="قائمة جميع الصفحات"
               aria-expanded={mobileMenuOpen}
-              className="h-9 w-9 inline-flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-[#001F4D] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#0D1B2E] shrink-0"
+              className="h-8 w-8 sm:h-9 sm:w-9 inline-flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-[#001F4D] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#0D1B2E] shrink-0"
             >
               {mobileMenuOpen ? <X className="w-4 h-4" aria-hidden="true" /> : <Menu className="w-4 h-4" aria-hidden="true" />}
             </button>
@@ -277,17 +277,17 @@ export const Layout: React.FC<LayoutProps> = ({
             <button
               type="button"
               onClick={() => handleGo('/')}
-              className="flex items-center gap-2 sm:gap-2.5 min-w-0 text-right focus-visible:outline-2"
+              className="flex items-center gap-1.5 sm:gap-2.5 text-right focus-visible:outline-2"
               aria-label="المسح الإشعاعي الطبي — الصفحة الرئيسية"
             >
-              <span className="h-9 w-12 sm:w-14 rounded-lg bg-white p-0.5 border border-slate-200 dark:border-slate-700 flex items-center justify-center shrink-0">
+              <span className="h-8 w-10 sm:h-9 sm:w-14 rounded-lg bg-white p-0.5 border border-slate-200 dark:border-slate-700 flex items-center justify-center shrink-0">
                 <img
                   src={LOGO_PATH}
                   alt="شعار منصة المسح الإشعاعي الطبي Medical Radiation Survey"
                   className="h-full w-full object-contain"
                 />
               </span>
-              <span className="font-bold text-sm sm:text-base text-[#001F4D] dark:text-white truncate">
+              <span className="font-bold text-[13px] sm:text-base text-[#001F4D] dark:text-white whitespace-nowrap">
                 المسح الإشعاعي الطبي
               </span>
             </button>
@@ -322,7 +322,7 @@ export const Layout: React.FC<LayoutProps> = ({
               type="button"
               onClick={() => setSearchOpen(true)}
               aria-label="بحث في المنصة"
-              className="h-9 inline-flex items-center gap-1.5 rounded-lg border border-slate-200 dark:border-slate-700 px-2.5 sm:px-3 text-xs font-semibold text-[#001F4D] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#0D1B2E] whitespace-nowrap"
+              className="h-8 w-8 sm:h-9 sm:w-auto inline-flex items-center justify-center gap-1.5 rounded-lg border border-slate-200 dark:border-slate-700 sm:px-3 text-xs font-semibold text-[#001F4D] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#0D1B2E] whitespace-nowrap"
             >
               <Search className="w-4 h-4" aria-hidden="true" />
               <span className="hidden xl:inline">بحث</span>
@@ -332,7 +332,7 @@ export const Layout: React.FC<LayoutProps> = ({
               type="button"
               onClick={() => setBookmarksOpen(true)}
               aria-label={`العلامات المرجعية (${progress.bookmarks.length})`}
-              className="relative h-9 w-9 inline-flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-[#001F4D] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#0D1B2E]"
+              className="relative hidden sm:inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-[#001F4D] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#0D1B2E]"
             >
               <Bookmark className="w-4 h-4" aria-hidden="true" />
               {progress.bookmarks.length > 0 && (
@@ -346,7 +346,7 @@ export const Layout: React.FC<LayoutProps> = ({
                 onClick={() => setDesignMenuOpen((v) => !v)}
                 aria-label="اختيار تصميم وهوية الموقع"
                 aria-expanded={designMenuOpen}
-                className="h-9 inline-flex items-center gap-1.5 rounded-lg border border-slate-200 dark:border-slate-700 px-2.5 text-xs font-semibold text-[#001F4D] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#0D1B2E] whitespace-nowrap"
+                className="h-8 w-8 sm:h-9 sm:w-auto inline-flex items-center justify-center gap-1.5 rounded-lg border border-slate-200 dark:border-slate-700 sm:px-2.5 text-xs font-semibold text-[#001F4D] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#0D1B2E] whitespace-nowrap"
               >
                 <Palette className="w-4 h-4" aria-hidden="true" />
                 <span className="hidden xl:inline">التصميم</span>
@@ -415,7 +415,7 @@ export const Layout: React.FC<LayoutProps> = ({
               type="button"
               onClick={onToggleTheme}
               aria-label={progress.theme === 'dark' ? 'التبديل إلى الوضع الفاتح' : 'التبديل إلى الوضع الداكن'}
-              className="h-9 w-9 inline-flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-[#001F4D] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#0D1B2E]"
+              className="h-8 w-8 sm:h-9 sm:w-9 inline-flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-[#001F4D] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#0D1B2E]"
             >
               {progress.theme === 'dark' ? (
                 <Sun className="w-4 h-4" aria-hidden="true" />
@@ -451,7 +451,7 @@ export const Layout: React.FC<LayoutProps> = ({
               onClick={onExitPlatform}
               aria-label="خروج من المنصة"
               title="خروج من المنصة"
-              className="h-9 inline-flex items-center gap-1.5 rounded-lg border border-rose-200 dark:border-rose-900/60 px-2.5 text-xs font-semibold text-rose-700 dark:text-rose-300 hover:bg-rose-50 dark:hover:bg-rose-950/40 whitespace-nowrap"
+              className="hidden sm:inline-flex h-9 items-center gap-1.5 rounded-lg border border-rose-200 dark:border-rose-900/60 px-2.5 text-xs font-semibold text-rose-700 dark:text-rose-300 hover:bg-rose-50 dark:hover:bg-rose-950/40 whitespace-nowrap"
             >
               <LogOut className="w-4 h-4" aria-hidden="true" />
               <span className="hidden xl:inline">خروج</span>
@@ -500,7 +500,19 @@ export const Layout: React.FC<LayoutProps> = ({
               })}
             </div>
 
-            <div className="border-t border-slate-200 dark:border-slate-800 pt-3 space-y-3">
+            <div className="border-t border-slate-200 dark:border-slate-800 pt-3 space-y-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  setBookmarksOpen(true);
+                }}
+                className="sm:hidden w-full inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 dark:border-slate-700 px-3 py-2 text-xs font-bold text-[#001F4D] dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
+              >
+                <Bookmark className="w-4 h-4" aria-hidden="true" />
+                <span>العلامات المرجعية ({progress.bookmarks.length})</span>
+              </button>
+
               <button
                 type="button"
                 onClick={() => {
