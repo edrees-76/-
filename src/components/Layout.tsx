@@ -256,17 +256,17 @@ export const Layout: React.FC<LayoutProps> = ({
         </div>
       )}
 
-      {/* Compact Sticky Top Header (Single Row, Clean Three-Zone Contract) */}
+      {/* Compact Sticky Top Header (Balanced Three-Zone RTL Layout) */}
       <header className="no-print sticky top-0 z-40 h-16 bg-white/95 dark:bg-[#050E1D]/95 backdrop-blur border-b border-slate-200 dark:border-slate-800">
-        <div className="max-w-7xl mx-auto h-full px-2.5 sm:px-6 flex items-center justify-between gap-2 sm:gap-4">
-          {/* Zone 1: Right-side Menu Button + Brand with original unmodified logo */}
-          <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1 sm:flex-initial">
+        <div className="max-w-7xl mx-auto h-full px-3 sm:px-6 flex items-center justify-between gap-3">
+          {/* Zone 1 (Right): Menu Toggle + Brand */}
+          <div className="flex items-center gap-2 sm:gap-2.5 min-w-0 shrink">
             <button
               type="button"
               onClick={() => setMobileMenuOpen((v) => !v)}
               aria-label="قائمة جميع الصفحات"
               aria-expanded={mobileMenuOpen}
-              className="p-1.5 sm:p-2 rounded-lg border border-slate-200 dark:border-slate-700 text-[#001F4D] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#0D1B2E] shrink-0"
+              className="h-9 w-9 inline-flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-[#001F4D] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#0D1B2E] shrink-0"
             >
               {mobileMenuOpen ? <X className="w-4 h-4" aria-hidden="true" /> : <Menu className="w-4 h-4" aria-hidden="true" />}
             </button>
@@ -274,24 +274,24 @@ export const Layout: React.FC<LayoutProps> = ({
             <button
               type="button"
               onClick={() => handleGo('/')}
-              className="flex items-center gap-2 sm:gap-3 min-w-0 text-right focus-visible:outline-2"
+              className="flex items-center gap-2 sm:gap-2.5 min-w-0 text-right focus-visible:outline-2"
               aria-label="المسح الإشعاعي الطبي — الصفحة الرئيسية"
             >
-              <span className="h-9 w-12 sm:h-10 sm:w-16 rounded bg-white p-0.5 border border-slate-200 dark:border-slate-700 flex items-center justify-center shrink-0">
+              <span className="h-9 w-12 sm:w-14 rounded-lg bg-white p-0.5 border border-slate-200 dark:border-slate-700 flex items-center justify-center shrink-0">
                 <img
                   src={LOGO_PATH}
                   alt="شعار منصة المسح الإشعاعي الطبي Medical Radiation Survey"
                   className="h-full w-full object-contain"
                 />
               </span>
-              <span className="font-bold text-sm sm:text-lg text-[#001F4D] dark:text-white truncate">
+              <span className="font-bold text-sm sm:text-base text-[#001F4D] dark:text-white truncate">
                 المسح الإشعاعي الطبي
               </span>
             </button>
           </div>
 
-          {/* Zone 2: Clean single-line typography nav links */}
-          <nav aria-label="التنقل الرئيسي" className="hidden lg:flex items-center gap-5 text-sm font-semibold">
+          {/* Zone 2 (Center): Clean single-line typography nav links */}
+          <nav aria-label="التنقل الرئيسي" className="hidden lg:flex items-center justify-center gap-3.5 xl:gap-5 text-[13px] font-semibold">
             {PRIMARY_NAV.map((item) => {
               const active =
                 currentPath === item.path ||
@@ -313,23 +313,23 @@ export const Layout: React.FC<LayoutProps> = ({
             })}
           </nav>
 
-          {/* Zone 3: Essential Functional Controls (Search, Bookmarks, Design, Theme, Mobile Menu) */}
+          {/* Zone 3 (Left): Uniform-height Functional Controls */}
           <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
             <button
               type="button"
               onClick={() => setSearchOpen(true)}
               aria-label="بحث في المنصة"
-              className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 dark:border-slate-700 p-1.5 sm:px-3 sm:py-2 text-xs font-semibold text-[#001F4D] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#0D1B2E] whitespace-nowrap"
+              className="h-9 inline-flex items-center gap-1.5 rounded-lg border border-slate-200 dark:border-slate-700 px-2.5 sm:px-3 text-xs font-semibold text-[#001F4D] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#0D1B2E] whitespace-nowrap"
             >
               <Search className="w-4 h-4" aria-hidden="true" />
-              <span className="hidden sm:inline">بحث</span>
+              <span className="hidden xl:inline">بحث</span>
             </button>
 
             <button
               type="button"
               onClick={() => setBookmarksOpen(true)}
               aria-label={`العلامات المرجعية (${progress.bookmarks.length})`}
-              className="relative p-1.5 sm:p-2 rounded-lg border border-slate-200 dark:border-slate-700 text-[#001F4D] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#0D1B2E]"
+              className="relative h-9 w-9 inline-flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-[#001F4D] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#0D1B2E]"
             >
               <Bookmark className="w-4 h-4" aria-hidden="true" />
               {progress.bookmarks.length > 0 && (
@@ -343,10 +343,10 @@ export const Layout: React.FC<LayoutProps> = ({
                 onClick={() => setDesignMenuOpen((v) => !v)}
                 aria-label="اختيار تصميم وهوية الموقع"
                 aria-expanded={designMenuOpen}
-                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 dark:border-slate-700 p-1.5 sm:px-2.5 sm:py-2 text-xs font-semibold text-[#001F4D] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#0D1B2E] whitespace-nowrap"
+                className="h-9 inline-flex items-center gap-1.5 rounded-lg border border-slate-200 dark:border-slate-700 px-2.5 text-xs font-semibold text-[#001F4D] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#0D1B2E] whitespace-nowrap"
               >
                 <Palette className="w-4 h-4" aria-hidden="true" />
-                <span className="hidden md:inline">التصميم</span>
+                <span className="hidden xl:inline">التصميم</span>
               </button>
 
               {designMenuOpen && (
@@ -412,7 +412,7 @@ export const Layout: React.FC<LayoutProps> = ({
               type="button"
               onClick={onToggleTheme}
               aria-label={progress.theme === 'dark' ? 'التبديل إلى الوضع الفاتح' : 'التبديل إلى الوضع الداكن'}
-              className="p-1.5 sm:p-2 rounded-lg border border-slate-200 dark:border-slate-700 text-[#001F4D] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#0D1B2E]"
+              className="h-9 w-9 inline-flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-[#001F4D] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#0D1B2E]"
             >
               {progress.theme === 'dark' ? (
                 <Sun className="w-4 h-4" aria-hidden="true" />
@@ -425,7 +425,7 @@ export const Layout: React.FC<LayoutProps> = ({
               <button
                 type="button"
                 onClick={onInstallApp}
-                className="hidden sm:inline-flex items-center gap-1.5 rounded-lg bg-[#00D1CE] px-3 py-2 text-xs font-bold text-[#001F4D] hover:opacity-90 whitespace-nowrap"
+                className="hidden sm:inline-flex h-9 items-center gap-1.5 rounded-lg bg-[#00D1CE] px-3 text-xs font-bold text-[#001F4D] hover:opacity-90 whitespace-nowrap"
               >
                 <Download className="w-3.5 h-3.5" aria-hidden="true" />
                 <span>تثبيت التطبيق</span>
@@ -446,27 +446,27 @@ export const Layout: React.FC<LayoutProps> = ({
         </div>
       </header>
 
-      {/* Full Navigation Drawer (Mobile + Desktop Quick All-Pages Index) */}
+      {/* Full Navigation Drawer (Anchored to Right Edge, Compact & Proportional) */}
       {mobileMenuOpen && (
-        <div className="no-print fixed inset-0 z-50 bg-slate-950/50 flex justify-start" onClick={() => setMobileMenuOpen(false)}>
+        <div className="no-print fixed inset-0 z-50 bg-slate-950/50 backdrop-blur-[1px]" onClick={() => setMobileMenuOpen(false)}>
           <aside
-            className="w-full max-w-sm bg-white dark:bg-[#0D1B2E] h-full overflow-y-auto p-6 border-l border-slate-200 dark:border-slate-800 space-y-5"
+            className="fixed top-0 right-0 h-full w-72 sm:w-80 bg-white dark:bg-[#0D1B2E] overflow-y-auto p-4 border-l border-slate-200 dark:border-slate-800 shadow-2xl space-y-3"
             onClick={(e) => e.stopPropagation()}
             aria-label="فهرس صفحات المنصة"
           >
-            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
-              <span className="font-bold text-[#001F4D] dark:text-white">جميع صفحات المنصة</span>
+            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2.5">
+              <span className="text-sm font-bold text-[#001F4D] dark:text-white">جميع صفحات المنصة</span>
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(false)}
                 aria-label="إغلاق القائمة"
-                className="p-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="space-y-1">
+            <div className="space-y-0.5">
               {ALL_PAGES_LINKS.map((link) => {
                 const active = currentPath === link.path;
                 return (
@@ -474,7 +474,7 @@ export const Layout: React.FC<LayoutProps> = ({
                     key={link.path}
                     type="button"
                     onClick={() => handleGo(link.path)}
-                    className={`w-full text-right px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors ${
+                    className={`w-full text-right px-3 py-2 rounded-lg text-xs sm:text-[13px] font-semibold transition-colors ${
                       active
                         ? 'bg-[#E6FAFA] dark:bg-[#001F4D] text-[#001F4D] dark:text-[#00D1CE]'
                         : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
