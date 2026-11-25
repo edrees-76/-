@@ -34,6 +34,7 @@ function normalizePath(raw: string): string {
 }
 
 export default function App() {
+  const [splashOpen, setSplashOpen] = useState(true);
   const [currentPath, setCurrentPath] = useState<string>(() =>
     typeof window !== 'undefined' ? normalizePath(window.location.pathname) : '/'
   );
@@ -323,13 +324,14 @@ export default function App() {
 
   return (
     <>
-      <DesignerSplash />
+      <DesignerSplash open={splashOpen} onEnter={() => setSplashOpen(false)} />
       <Layout
         currentPath={currentPath}
         onNavigate={navigate}
         progress={progress}
         onToggleTheme={handleToggleTheme}
         onSelectDesign={handleSelectDesign}
+        onExitPlatform={() => setSplashOpen(true)}
         isOnline={pwa.isOnline}
         isInstallable={pwa.isInstallable}
         isInstalled={pwa.isInstalled}

@@ -4,6 +4,7 @@ import {
   Check,
   Download,
   ExternalLink,
+  LogOut,
   Menu,
   Moon,
   Palette,
@@ -32,6 +33,7 @@ interface LayoutProps {
   progress: LocalUserProgress;
   onToggleTheme: () => void;
   onSelectDesign: (design: DesignId) => void;
+  onExitPlatform: () => void;
   isOnline: boolean;
   isInstallable: boolean;
   isInstalled: boolean;
@@ -107,6 +109,7 @@ export const Layout: React.FC<LayoutProps> = ({
   progress,
   onToggleTheme,
   onSelectDesign,
+  onExitPlatform,
   isOnline,
   isInstallable,
   isInstalled,
@@ -442,6 +445,17 @@ export const Layout: React.FC<LayoutProps> = ({
                 <span>تثبيت iOS</span>
               </button>
             )}
+
+            <button
+              type="button"
+              onClick={onExitPlatform}
+              aria-label="خروج من المنصة"
+              title="خروج من المنصة"
+              className="h-9 inline-flex items-center gap-1.5 rounded-lg border border-rose-200 dark:border-rose-900/60 px-2.5 text-xs font-semibold text-rose-700 dark:text-rose-300 hover:bg-rose-50 dark:hover:bg-rose-950/40 whitespace-nowrap"
+            >
+              <LogOut className="w-4 h-4" aria-hidden="true" />
+              <span className="hidden xl:inline">خروج</span>
+            </button>
           </div>
         </div>
       </header>
@@ -486,7 +500,20 @@ export const Layout: React.FC<LayoutProps> = ({
               })}
             </div>
 
-            <div className="border-t border-slate-200 dark:border-slate-800 pt-4 text-xs text-slate-600 dark:text-slate-400 space-y-2">
+            <div className="border-t border-slate-200 dark:border-slate-800 pt-3 space-y-3">
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onExitPlatform();
+                }}
+                className="w-full inline-flex items-center justify-center gap-2 rounded-lg border border-rose-200 dark:border-rose-900/60 px-3 py-2 text-xs font-bold text-rose-700 dark:text-rose-300 hover:bg-rose-50 dark:hover:bg-rose-950/40"
+              >
+                <LogOut className="w-4 h-4" aria-hidden="true" />
+                <span>خروج من المنصة</span>
+              </button>
+
+              <div className="text-xs text-slate-600 dark:text-slate-400 space-y-2">
               <div className="flex items-center gap-2">
                 {isOnline ? <Wifi className="w-4 h-4 text-[#007574] dark:text-[#00D1CE]" /> : <WifiOff className="w-4 h-4 text-amber-600" />}
                 <span>الحالة: {isOnline ? 'متصل بالإنترنت' : 'دون اتصال'}</span>
@@ -503,6 +530,7 @@ export const Layout: React.FC<LayoutProps> = ({
                   تثبيت التطبيق على الجهاز
                 </button>
               )}
+              </div>
             </div>
           </aside>
         </div>

@@ -2,17 +2,25 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { DESIGNER_LOGO_PATH } from './Layout';
 
-export const DesignerSplash: React.FC = () => {
-  const [visible, setVisible] = useState(true);
+interface DesignerSplashProps {
+  open: boolean;
+  onEnter: () => void;
+}
+
+export const DesignerSplash: React.FC<DesignerSplashProps> = ({ open, onEnter }) => {
   const [fadingOut, setFadingOut] = useState(false);
 
   const handleEnter = useCallback(() => {
     if (fadingOut) return;
     setFadingOut(true);
-    window.setTimeout(() => setVisible(false), 300);
-  }, [fadingOut]);
+    window.setTimeout(() => {
+      setFadingOut(false);
+      onEnter();
+    }, 280);
+  }, [fadingOut, onEnter]);
 
   useEffect(() => {
+    if (!open) return;
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
@@ -21,9 +29,9 @@ export const DesignerSplash: React.FC = () => {
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [handleEnter]);
+  }, [open, handleEnter]);
 
-  if (!visible) return null;
+  if (!open) return null;
 
   return (
     <div
