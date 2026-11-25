@@ -446,9 +446,9 @@ export const Layout: React.FC<LayoutProps> = ({
 
       {/* Full Navigation Drawer (Mobile + Desktop Quick All-Pages Index) */}
       {mobileMenuOpen && (
-        <div className="no-print fixed inset-0 z-50 bg-slate-950/50 flex justify-end" onClick={() => setMobileMenuOpen(false)}>
+        <div className="no-print fixed inset-0 z-50 bg-slate-950/50 flex justify-start" onClick={() => setMobileMenuOpen(false)}>
           <aside
-            className="w-full max-w-sm bg-white dark:bg-[#0D1B2E] h-full overflow-y-auto p-6 border-r border-slate-200 dark:border-slate-800 space-y-5"
+            className="w-full max-w-sm bg-white dark:bg-[#0D1B2E] h-full overflow-y-auto p-6 border-l border-slate-200 dark:border-slate-800 space-y-5"
             onClick={(e) => e.stopPropagation()}
             aria-label="فهرس صفحات المنصة"
           >
