@@ -259,24 +259,36 @@ export const Layout: React.FC<LayoutProps> = ({
       {/* Compact Sticky Top Header (Single Row, Clean Three-Zone Contract) */}
       <header className="no-print sticky top-0 z-40 h-16 bg-white/95 dark:bg-[#050E1D]/95 backdrop-blur border-b border-slate-200 dark:border-slate-800">
         <div className="max-w-7xl mx-auto h-full px-2.5 sm:px-6 flex items-center justify-between gap-2 sm:gap-4">
-          {/* Zone 1: Brand with original unmodified logo */}
-          <button
-            type="button"
-            onClick={() => handleGo('/')}
-            className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1 sm:flex-initial text-right focus-visible:outline-2"
-            aria-label="المسح الإشعاعي الطبي — الصفحة الرئيسية"
-          >
-            <span className="h-9 w-12 sm:h-10 sm:w-16 rounded bg-white p-0.5 border border-slate-200 dark:border-slate-700 flex items-center justify-center shrink-0">
-              <img
-                src={LOGO_PATH}
-                alt="شعار منصة المسح الإشعاعي الطبي Medical Radiation Survey"
-                className="h-full w-full object-contain"
-              />
-            </span>
-            <span className="font-bold text-sm sm:text-lg text-[#001F4D] dark:text-white truncate">
-              المسح الإشعاعي الطبي
-            </span>
-          </button>
+          {/* Zone 1: Right-side Menu Button + Brand with original unmodified logo */}
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1 sm:flex-initial">
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen((v) => !v)}
+              aria-label="قائمة جميع الصفحات"
+              aria-expanded={mobileMenuOpen}
+              className="p-1.5 sm:p-2 rounded-lg border border-slate-200 dark:border-slate-700 text-[#001F4D] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#0D1B2E] shrink-0"
+            >
+              {mobileMenuOpen ? <X className="w-4 h-4" aria-hidden="true" /> : <Menu className="w-4 h-4" aria-hidden="true" />}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => handleGo('/')}
+              className="flex items-center gap-2 sm:gap-3 min-w-0 text-right focus-visible:outline-2"
+              aria-label="المسح الإشعاعي الطبي — الصفحة الرئيسية"
+            >
+              <span className="h-9 w-12 sm:h-10 sm:w-16 rounded bg-white p-0.5 border border-slate-200 dark:border-slate-700 flex items-center justify-center shrink-0">
+                <img
+                  src={LOGO_PATH}
+                  alt="شعار منصة المسح الإشعاعي الطبي Medical Radiation Survey"
+                  className="h-full w-full object-contain"
+                />
+              </span>
+              <span className="font-bold text-sm sm:text-lg text-[#001F4D] dark:text-white truncate">
+                المسح الإشعاعي الطبي
+              </span>
+            </button>
+          </div>
 
           {/* Zone 2: Clean single-line typography nav links */}
           <nav aria-label="التنقل الرئيسي" className="hidden lg:flex items-center gap-5 text-sm font-semibold">
@@ -430,16 +442,6 @@ export const Layout: React.FC<LayoutProps> = ({
                 <span>تثبيت iOS</span>
               </button>
             )}
-
-            <button
-              type="button"
-              onClick={() => setMobileMenuOpen((v) => !v)}
-              aria-label="قائمة جميع الصفحات"
-              aria-expanded={mobileMenuOpen}
-              className="p-1.5 sm:p-2 rounded-lg border border-slate-200 dark:border-slate-700 text-[#001F4D] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#0D1B2E]"
-            >
-              {mobileMenuOpen ? <X className="w-4 h-4" aria-hidden="true" /> : <Menu className="w-4 h-4" aria-hidden="true" />}
-            </button>
           </div>
         </div>
       </header>
