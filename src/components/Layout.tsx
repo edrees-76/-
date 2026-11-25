@@ -258,22 +258,22 @@ export const Layout: React.FC<LayoutProps> = ({
 
       {/* Compact Sticky Top Header (Single Row, Clean Three-Zone Contract) */}
       <header className="no-print sticky top-0 z-40 h-16 bg-white/95 dark:bg-[#050E1D]/95 backdrop-blur border-b border-slate-200 dark:border-slate-800">
-        <div className="max-w-7xl mx-auto h-full px-4 sm:px-6 flex items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto h-full px-2.5 sm:px-6 flex items-center justify-between gap-2 sm:gap-4">
           {/* Zone 1: Brand with original unmodified logo */}
           <button
             type="button"
             onClick={() => handleGo('/')}
-            className="flex items-center gap-3 shrink-0 text-right focus-visible:outline-2"
+            className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1 sm:flex-initial text-right focus-visible:outline-2"
             aria-label="المسح الإشعاعي الطبي — الصفحة الرئيسية"
           >
-            <span className="h-10 w-16 rounded bg-white p-0.5 border border-slate-200 dark:border-slate-700 flex items-center justify-center shrink-0">
+            <span className="h-9 w-12 sm:h-10 sm:w-16 rounded bg-white p-0.5 border border-slate-200 dark:border-slate-700 flex items-center justify-center shrink-0">
               <img
                 src={LOGO_PATH}
                 alt="شعار منصة المسح الإشعاعي الطبي Medical Radiation Survey"
                 className="h-full w-full object-contain"
               />
             </span>
-            <span className="font-bold text-base sm:text-lg text-[#001F4D] dark:text-white whitespace-nowrap">
+            <span className="font-bold text-sm sm:text-lg text-[#001F4D] dark:text-white truncate">
               المسح الإشعاعي الطبي
             </span>
           </button>
@@ -301,13 +301,13 @@ export const Layout: React.FC<LayoutProps> = ({
             })}
           </nav>
 
-          {/* Zone 3: Essential Functional Controls (Search, Bookmarks, Theme, Mobile Menu) */}
-          <div className="flex items-center gap-1.5 shrink-0">
+          {/* Zone 3: Essential Functional Controls (Search, Bookmarks, Design, Theme, Mobile Menu) */}
+          <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
             <button
               type="button"
               onClick={() => setSearchOpen(true)}
               aria-label="بحث في المنصة"
-              className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 dark:border-slate-700 px-3 py-2 text-xs font-semibold text-[#001F4D] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#0D1B2E] whitespace-nowrap"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 dark:border-slate-700 p-1.5 sm:px-3 sm:py-2 text-xs font-semibold text-[#001F4D] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#0D1B2E] whitespace-nowrap"
             >
               <Search className="w-4 h-4" aria-hidden="true" />
               <span className="hidden sm:inline">بحث</span>
@@ -317,7 +317,7 @@ export const Layout: React.FC<LayoutProps> = ({
               type="button"
               onClick={() => setBookmarksOpen(true)}
               aria-label={`العلامات المرجعية (${progress.bookmarks.length})`}
-              className="relative p-2 rounded-lg border border-slate-200 dark:border-slate-700 text-[#001F4D] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#0D1B2E]"
+              className="relative p-1.5 sm:p-2 rounded-lg border border-slate-200 dark:border-slate-700 text-[#001F4D] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#0D1B2E]"
             >
               <Bookmark className="w-4 h-4" aria-hidden="true" />
               {progress.bookmarks.length > 0 && (
@@ -331,7 +331,7 @@ export const Layout: React.FC<LayoutProps> = ({
                 onClick={() => setDesignMenuOpen((v) => !v)}
                 aria-label="اختيار تصميم وهوية الموقع"
                 aria-expanded={designMenuOpen}
-                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 dark:border-slate-700 px-2.5 py-2 text-xs font-semibold text-[#001F4D] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#0D1B2E] whitespace-nowrap"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 dark:border-slate-700 p-1.5 sm:px-2.5 sm:py-2 text-xs font-semibold text-[#001F4D] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#0D1B2E] whitespace-nowrap"
               >
                 <Palette className="w-4 h-4" aria-hidden="true" />
                 <span className="hidden md:inline">التصميم</span>
@@ -347,7 +347,7 @@ export const Layout: React.FC<LayoutProps> = ({
                   <div
                     role="menu"
                     aria-label="اختيار هوية وتصميم المنصة"
-                    className="absolute left-0 mt-2 w-72 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0D1B2E] p-2 shadow-xl z-50 space-y-1"
+                    className="fixed inset-x-3 top-[4.25rem] sm:absolute sm:inset-x-auto sm:left-0 sm:top-auto sm:mt-2 sm:w-72 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0D1B2E] p-2 shadow-xl z-50 space-y-1"
                   >
                     <p className="px-2.5 py-1 text-[11px] font-bold text-slate-500 dark:text-slate-400">
                       اختر هوية وتصميم المنصة
@@ -400,7 +400,7 @@ export const Layout: React.FC<LayoutProps> = ({
               type="button"
               onClick={onToggleTheme}
               aria-label={progress.theme === 'dark' ? 'التبديل إلى الوضع الفاتح' : 'التبديل إلى الوضع الداكن'}
-              className="p-2 rounded-lg border border-slate-200 dark:border-slate-700 text-[#001F4D] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#0D1B2E]"
+              className="p-1.5 sm:p-2 rounded-lg border border-slate-200 dark:border-slate-700 text-[#001F4D] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#0D1B2E]"
             >
               {progress.theme === 'dark' ? (
                 <Sun className="w-4 h-4" aria-hidden="true" />
@@ -436,7 +436,7 @@ export const Layout: React.FC<LayoutProps> = ({
               onClick={() => setMobileMenuOpen((v) => !v)}
               aria-label="قائمة جميع الصفحات"
               aria-expanded={mobileMenuOpen}
-              className="p-2 rounded-lg border border-slate-200 dark:border-slate-700 text-[#001F4D] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#0D1B2E]"
+              className="p-1.5 sm:p-2 rounded-lg border border-slate-200 dark:border-slate-700 text-[#001F4D] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#0D1B2E]"
             >
               {mobileMenuOpen ? <X className="w-4 h-4" aria-hidden="true" /> : <Menu className="w-4 h-4" aria-hidden="true" />}
             </button>

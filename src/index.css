@@ -5,7 +5,8 @@
   :root,
   html[data-design="clinical"] {
     --navy-primary: #0F172A;
-    --turquoise-accent: #0D9488;
+    --turquoise-accent: #0F766E;
+    --accent-fg: #FFFFFF;
     --turquoise-text-light: #0F766E;
     --ink-body: #334155;
     --canvas-light: #F8FAFC;
@@ -18,8 +19,9 @@
   }
 
   html[data-design="dosimetry"] {
-    --navy-primary: #090D16;
+    --navy-primary: #0F172A;
     --turquoise-accent: #06B6D4;
+    --accent-fg: #090D16;
     --turquoise-text-light: #0E7490;
     --ink-body: #334155;
     --canvas-light: #F1F5F9;
@@ -33,7 +35,8 @@
 
   html[data-design="editorial"] {
     --navy-primary: #134E4A;
-    --turquoise-accent: #EA580C;
+    --turquoise-accent: #C2410C;
+    --accent-fg: #FFFFFF;
     --turquoise-text-light: #0F766E;
     --ink-body: #292524;
     --canvas-light: #FAF8F5;
@@ -48,6 +51,7 @@
   html[data-design="cobalt"] {
     --navy-primary: #1E1B4B;
     --turquoise-accent: #2563EB;
+    --accent-fg: #FFFFFF;
     --turquoise-text-light: #1D4ED8;
     --ink-body: #334155;
     --canvas-light: #F1F5F9;
@@ -90,16 +94,17 @@
   }
 }
 
-/* Dynamic Design Identity Overrides across all 4 selectable themes */
-html[data-design] .bg-\[\#F8FAFC\] { background-color: var(--canvas-light); }
+/* Dynamic Design Identity Overrides across all 4 selectable themes (WCAG-safe in both light and dark modes) */
+html[data-design]:not(.dark) .bg-\[\#F8FAFC\] { background-color: var(--canvas-light); }
 html[data-design].dark .dark\:bg-\[\#050E1D\] { background-color: var(--canvas-dark); }
 html[data-design].dark .dark\:bg-\[\#0D1B2E\] { background-color: var(--card-dark); }
 html[data-design] .bg-\[\#001F4D\] { background-color: var(--navy-primary); }
-html[data-design] .text-\[\#001F4D\] { color: var(--navy-primary); }
-html[data-design] .border-\[\#001F4D\] { border-color: var(--navy-primary); }
-html[data-design] .bg-\[\#00D1CE\] { background-color: var(--turquoise-accent); color: #FFFFFF; }
-html[data-design] .text-\[\#007574\] { color: var(--turquoise-text-light); }
-html[data-design] .bg-\[\#E6FAFA\] { background-color: var(--surface-sky); }
+html[data-design]:not(.dark) .text-\[\#001F4D\]:not(.bg-\[\#00D1CE\]) { color: var(--navy-primary); }
+html[data-design]:not(.dark) .border-\[\#001F4D\] { border-color: var(--navy-primary); }
+html[data-design] .bg-\[\#00D1CE\] { background-color: var(--turquoise-accent); color: var(--accent-fg) !important; }
+html[data-design]:not(.dark) .text-\[\#007574\] { color: var(--turquoise-text-light); }
+html[data-design]:not(.dark) .bg-\[\#E6FAFA\] { background-color: var(--surface-sky); }
+html[data-design] .border-\[\#00D1CE\] { border-color: var(--turquoise-accent); }
 html[data-design] .rounded-xl { border-radius: var(--design-radius); box-shadow: var(--design-card-shadow); }
 html[data-design="cobalt"]:not(.dark) .bg-white {
   background-color: rgba(255, 255, 255, 0.88);
