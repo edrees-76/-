@@ -23,8 +23,6 @@ import {
 } from '../data/references';
 import {
   ATTACHMENT_AUDIT,
-  DEPLOYMENT_GUIDE_STEPS,
-  POST_DEPLOY_CHECKLIST,
   REMAINING_LIMITATIONS,
 } from '../data/siteAudit';
 import { DEFAULT_FORMS_DRAFT, DEFAULT_ROOM_PLAN, type SurveyFormsDraft } from '../data/forms';
@@ -294,7 +292,6 @@ export const AboutOfflinePage: React.FC<AboutOfflineProps> = ({
   onApplyUpdate,
 }) => {
   const [backupMsg, setBackupMsg] = useState<string | null>(null);
-  const [deployChecks, setDeployChecks] = useState<boolean[]>(() => POST_DEPLOY_CHECKLIST.map(() => false));
   const restoreInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleFullBackupExport = async () => {
@@ -584,41 +581,6 @@ export const AboutOfflinePage: React.FC<AboutOfflineProps> = ({
           </ul>
         </section>
       </div>
-
-      {/* Beginner Static Hosting Deployment Guide */}
-      <section className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E] p-6 space-y-4">
-        <h2 className="text-lg font-bold text-[#001F4D] dark:text-white">
-          دليل النشر الثابت للمبتدئ وقائمة فحص ما بعد النشر
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {DEPLOYMENT_GUIDE_STEPS.map((item, i) => (
-            <div key={i} className="rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#050E1D] p-4 space-y-2 text-xs">
-              <h3 className="font-bold text-[#001F4D] dark:text-white">{item.step}</h3>
-              <div dir="ltr" className="ltr-block rounded bg-[#001F4D] text-[#E6FAFA] p-2.5 font-mono space-y-1">
-                {item.commands.map((cmd, idx) => <div key={idx}>{cmd}</div>)}
-              </div>
-              <p className="text-slate-600 dark:text-slate-300 leading-relaxed">{item.description}</p>
-            </div>
-          ))}
-        </div>
-
-        <div className="pt-2 space-y-2">
-          <h3 className="text-sm font-bold text-[#001F4D] dark:text-white">قائمة فحص ما بعد النشر التفاعلية</h3>
-          <div className="space-y-1.5 text-xs">
-            {POST_DEPLOY_CHECKLIST.map((item, i) => (
-              <label key={i} className="flex items-start gap-2 rounded-lg border border-slate-200 dark:border-slate-800 p-2.5 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={deployChecks[i]}
-                  onChange={(e) => setDeployChecks((prev) => prev.map((v, idx) => (idx === i ? e.target.checked : v)))}
-                  className="mt-0.5"
-                />
-                <span>{item}</span>
-              </label>
-            ))}
-          </div>
-        </div>
-      </section>
     </div>
   );
 };
