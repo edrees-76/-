@@ -24,6 +24,7 @@ export const DEFAULT_USER_PROGRESS: LocalUserProgress = {
   scenarioScores: {},
   quizRecords: {},
   theme: 'light',
+  design: 'clinical',
 };
 
 function sanitizeQuizRecords(raw: unknown): Record<string, LessonQuizRecord> {
@@ -87,9 +88,16 @@ export function loadUserProgress(): LocalUserProgress {
       trackCerts.beginner = cert;
     }
 
+    const validDesigns = ['clinical', 'dosimetry', 'editorial', 'cobalt'] as const;
+    const design =
+      typeof parsed.design === 'string' && (validDesigns as readonly string[]).includes(parsed.design)
+        ? (parsed.design as LocalUserProgress['design'])
+        : 'clinical';
+
     return {
       ...DEFAULT_USER_PROGRESS,
       ...parsed,
+      design,
       completedLessons: Array.isArray(parsed.completedLessons) ? parsed.completedLessons : [],
       bookmarks: Array.isArray(parsed.bookmarks) ? parsed.bookmarks : [],
       completedChecklists:

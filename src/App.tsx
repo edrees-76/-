@@ -10,7 +10,7 @@ import {
   recordQuizAttempt,
   saveUserProgress,
 } from './utils/storage';
-import type { LocalUserProgress, TrackId } from './types';
+import type { DesignId, LocalUserProgress, TrackId } from './types';
 
 const LibraryPage = lazy(() => import('./pages/LibraryPages').then((m) => ({ default: m.LibraryPage })));
 const LessonDetailPage = lazy(() => import('./pages/LibraryPages').then((m) => ({ default: m.LessonDetailPage })));
@@ -46,7 +46,7 @@ export default function App() {
 
   const pwa = usePWA();
 
-  // Sync dark mode class on <html>
+  // Sync dark mode class and active design identity on <html>
   useEffect(() => {
     const root = document.documentElement;
     if (progress.theme === 'dark') {
@@ -54,7 +54,8 @@ export default function App() {
     } else {
       root.classList.remove('dark');
     }
-  }, [progress.theme]);
+    root.dataset.design = progress.design ?? 'clinical';
+  }, [progress.theme, progress.design]);
 
   // Listen for browser back/forward navigation
   useEffect(() => {
@@ -86,6 +87,17 @@ export default function App() {
   const handleToggleTheme = useCallback(() => {
     updateProgress((p) => ({ ...p, theme: p.theme === 'dark' ? 'light' : 'dark' }));
   }, [updateProgress]);
+
+  const handleSelectDesign = useCallback(
+    (design: DesignId) => {
+      updateProgress((p) => ({
+        ...p,
+        design,
+        theme: design === 'dosimetry' ? 'dark' : 'light',
+      }));
+    },
+    [updateProgress]
+  );
 
   const handleSelectTrack = useCallback(
     (track: TrackId) => {
@@ -317,6 +329,7 @@ export default function App() {
         onNavigate={navigate}
         progress={progress}
         onToggleTheme={handleToggleTheme}
+        onSelectDesign={handleSelectDesign}
         isOnline={pwa.isOnline}
         isInstallable={pwa.isInstallable}
         isInstalled={pwa.isInstalled}

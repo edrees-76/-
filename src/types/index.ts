@@ -316,6 +316,8 @@ export interface BeginnerCertificateRecord {
   certificateNumber: string; // MRS-BEG-YYYYMMDD-XXXX
 }
 
+export type DesignId = 'clinical' | 'dosimetry' | 'editorial' | 'cobalt';
+
 export interface LocalUserProgress {
   selectedTrack: TrackId;
   completedLessons: string[];
@@ -327,4 +329,5 @@ export interface LocalUserProgress {
   beginnerCertificate?: BeginnerCertificateRecord;
   trackCertificates?: Partial<Record<TrackId, BeginnerCertificateRecord>>;
   theme: 'light' | 'dark';
+  design?: DesignId;
 }

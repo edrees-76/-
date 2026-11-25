@@ -2,15 +2,61 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
-  :root {
-    --navy-primary: #001F4D;
-    --turquoise-accent: #00D1CE;
-    --turquoise-text-light: #007574;
+  :root,
+  html[data-design="clinical"] {
+    --navy-primary: #0F172A;
+    --turquoise-accent: #0D9488;
+    --turquoise-text-light: #0F766E;
     --ink-body: #334155;
     --canvas-light: #F8FAFC;
-    --surface-sky: #E6FAFA;
-    --canvas-dark: #050E1D;
-    --card-dark: #0D1B2E;
+    --surface-sky: #CCFBF1;
+    --canvas-dark: #0B1120;
+    --card-dark: #111827;
+    --design-border: #E2E8F0;
+    --design-radius: 0.75rem;
+    --design-card-shadow: 0 1px 2px 0 rgb(15 23 42 / 0.04);
+  }
+
+  html[data-design="dosimetry"] {
+    --navy-primary: #090D16;
+    --turquoise-accent: #06B6D4;
+    --turquoise-text-light: #0E7490;
+    --ink-body: #334155;
+    --canvas-light: #F1F5F9;
+    --surface-sky: #CFFAFE;
+    --canvas-dark: #090D16;
+    --card-dark: #111827;
+    --design-border: #1F2937;
+    --design-radius: 0.625rem;
+    --design-card-shadow: 0 0 0 1px rgb(6 182 212 / 0.14);
+  }
+
+  html[data-design="editorial"] {
+    --navy-primary: #134E4A;
+    --turquoise-accent: #EA580C;
+    --turquoise-text-light: #0F766E;
+    --ink-body: #292524;
+    --canvas-light: #FAF8F5;
+    --surface-sky: #FFEDD5;
+    --canvas-dark: #141210;
+    --card-dark: #1C1917;
+    --design-border: #E7E5E4;
+    --design-radius: 0.875rem;
+    --design-card-shadow: 0 2px 6px -1px rgb(28 25 23 / 0.05);
+  }
+
+  html[data-design="cobalt"] {
+    --navy-primary: #1E1B4B;
+    --turquoise-accent: #2563EB;
+    --turquoise-text-light: #1D4ED8;
+    --ink-body: #334155;
+    --canvas-light: #F1F5F9;
+    --surface-sky: #DBEAFE;
+    --canvas-dark: #090D1F;
+    --card-dark: #131836;
+    --design-border: #CBD5E1;
+    --design-radius: 1.25rem;
+    --design-card-shadow: 0 10px 25px -8px rgb(37 99 235 / 0.14);
   }
 
   html {
@@ -39,9 +85,25 @@
   }
 
   :focus-visible {
-    outline: 2px solid #00D1CE;
+    outline: 2px solid var(--turquoise-accent);
     outline-offset: 2px;
   }
+}
+
+/* Dynamic Design Identity Overrides across all 4 selectable themes */
+html[data-design] .bg-\[\#F8FAFC\] { background-color: var(--canvas-light); }
+html[data-design].dark .dark\:bg-\[\#050E1D\] { background-color: var(--canvas-dark); }
+html[data-design].dark .dark\:bg-\[\#0D1B2E\] { background-color: var(--card-dark); }
+html[data-design] .bg-\[\#001F4D\] { background-color: var(--navy-primary); }
+html[data-design] .text-\[\#001F4D\] { color: var(--navy-primary); }
+html[data-design] .border-\[\#001F4D\] { border-color: var(--navy-primary); }
+html[data-design] .bg-\[\#00D1CE\] { background-color: var(--turquoise-accent); color: #FFFFFF; }
+html[data-design] .text-\[\#007574\] { color: var(--turquoise-text-light); }
+html[data-design] .bg-\[\#E6FAFA\] { background-color: var(--surface-sky); }
+html[data-design] .rounded-xl { border-radius: var(--design-radius); box-shadow: var(--design-card-shadow); }
+html[data-design="cobalt"]:not(.dark) .bg-white {
+  background-color: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(8px);
 }
 
 /* Isolated LTR spans for formulas, units, coordinates, and model codes inside RTL prose */
