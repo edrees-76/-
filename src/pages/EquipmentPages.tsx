@@ -99,11 +99,15 @@ export const EquipmentCatalogPage: React.FC<EquipmentCatalogProps> = ({
               className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E] p-5 flex flex-col justify-between gap-4"
             >
               <div className="space-y-3">
-                {/* Honest No-Unlicensed-Image Placeholder */}
-                <div className="rounded-lg border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-[#050E1D] p-4 flex flex-col items-center justify-center text-center min-h-[110px]">
-                  <ImageOff className="w-6 h-6 text-slate-400 mb-1.5" aria-hidden="true" />
-                  <span className="text-xs font-bold text-slate-700 dark:text-slate-300">صورة غير متاحة</span>
-                  <span className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-2">
+                {/* Equipment Photo from Illustrated Guide */}
+                <div className="rounded-lg border border-slate-200 dark:border-slate-700 bg-white p-3 flex flex-col items-center justify-center text-center min-h-[140px]">
+                  <img
+                    src={`/assets/equipment/${eq.id}.png`}
+                    alt={eq.model}
+                    loading="lazy"
+                    className="h-28 w-full object-contain mx-auto"
+                  />
+                  <span className="text-[10px] text-slate-500 mt-1.5 line-clamp-1">
                     {eq.imageStatus.sourceAttribution}
                   </span>
                 </div>
@@ -249,11 +253,14 @@ export const EquipmentDetailPage: React.FC<EquipmentDetailProps> = ({
 
       <header className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1B2E] p-6 space-y-5">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-          <div className="md:col-span-4 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-[#050E1D] p-5 text-center space-y-2">
-            <ImageOff className="w-8 h-8 text-slate-400 mx-auto" aria-hidden="true" />
-            <div className="text-sm font-bold text-slate-700 dark:text-slate-200">صورة غير متاحة</div>
-            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">{eq.imageStatus.sourceAttribution}</p>
-            <p className="text-[11px] text-slate-500 dark:text-slate-500">{eq.imageStatus.rightsNote}</p>
+          <div className="md:col-span-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white p-4 text-center space-y-2">
+            <img
+              src={`/assets/equipment/${eq.id}.png`}
+              alt={eq.model}
+              className="h-44 w-full object-contain mx-auto"
+            />
+            <p className="text-xs text-slate-600 leading-relaxed">{eq.imageStatus.sourceAttribution}</p>
+            <p className="text-[11px] text-slate-500">{eq.imageStatus.rightsNote}</p>
           </div>
 
           <div className="md:col-span-8 space-y-3">
